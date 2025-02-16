@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+
+{% block title %}New Post{% endblock %}
+
+{% block main %}
+MOBILE
+g.is_mobile:
+<strong>{% if g.is_mobile %}True{% else %}False{% endif %}</strong>
+
+  <form method="post">
+    <div class="row mb-3">
+        <input name="title" id="title" value="{{ request.form['title'] }}" required placeholder="Title">
+    </div>
+
+
+    <div class="row mb-3" style="border:1px solid gray; padding:5px">
+      <div class="row mb">Pictures</div>
+        <button type="button" class="btn btn-info col-sm">Upload</button>
+        <label class="col-sm-1"> </label>
+        <button type="button" class="btn btn-info col-sm">Camera</button>
+      </div>
+    </div>
+
+
+    <div class="row mb-3">
+        <textarea name="message" id="message" placeholder="Message">{{ request.form['body'] }}</textarea>
+    </div>
+    <div class="row mb-3">
+        <input name="location" id="location" value="{{ request.form['location'] }}" required placeholder="Location">
+    </div>
+    <div class="row mb-3">
+        <input name="tags" id="tags" value="{{ request.form['tags'] }}" required placeholder="Tags">
+    </div>
+      <input type="submit" class="btn btn-primary" value="Post">
+      <button type="button" class="btn btn-info">Preview</button>
+  </form>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Posts{% endblock %}
+
+
+{% if g.user %}
+  {% block navbar %}
+    <li class="nav-item"><a class="nav-link" href="{{ url_for('blog.create') }}">New Post</a></li>
+  {% endblock %}
+{% endif %}
+
+{% block main %}
+
+<!--{% for post in posts.values() %} {{ post }} <br><br>{% endfor %}-->
+
+
+{% for post_id, post in posts.items() %}
+<div class="card min-vw-10 max-vw-20">
+
+    <div class="card-header">
+
+      <div class="container text-center">
+        <div class="row row-cols-2">
+          <div class="col text-start">
+            <b>{{ post['name'] }}</b>
+          </div>
+            <div class="col text-end">
+              {{ post['datetime'].strftime('%Y-%m-%d') }}
+            </div>
+         </div>
+      </div>
+    </div>
+
+
+<!--  <img src="static/images/2024_12/thumbnails/2020_03_01_08_47_12_tmb.jpg" class="card-img img-fluid" loading="lazy" alt="...">-->
+
+
+
+  <div class="container text-center">
+    <div class="row row-cols-2">
+      {% for thumb in post['thumb'] %}
+        <div class="col">
+          <img src={{ thumb }} class="card-img-top img-fluid" loading="lazy" alt="...">
+        </div>
+      {% endfor %}
+<!--      make thumbnails clickable and they open up a carousel of all the images-->
+<!--      make last thumbnail display total number of imgs if more than 4-->
+    </div>
+  </div>
+
+    <div class="card-body">
+      <h4 class="card-title text-start">{{ post['title'] }}</h4>
+<!--      <h6 class="card-subtitle mb-2 text-muted">Card Subtitle</h6>-->
+      <p class="card-text text-start">{{ post['message'] }}</p>
+<!--      <a href="#" class="btn btn-primary">Go somewhere</a>-->
+      {% if g.user['id'] == post['uid'] %}
+        <a class="action" href="{{ url_for('blog.update', id=post['pid']) }}">Edit</a>
+      {% endif %}
+   </div>
+
+
+  <div class="card-footer">
+    <div id="location" class="container'fluid text-start">
+      <button class="btn btn-primary rounded-pill btn-info" type="button">Button</button>
+    </div>
+    <div id="tags" class="container'fluid text-start mt-2">
+      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag1</button>
+      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag2</button>
+      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag3</button>
+      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag4</button>
+      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag5</button>
+      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag1</button>
+      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag2</button>
+      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag3</button>
+      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag4</button>
+      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag5</button>
+      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag1</button>
+      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag2</button>
+      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag3</button>
+      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag4</button>
+      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag5</button>
+    </div>
+  </div>
+
+</div>
+
+  {% if not loop.last %}
+    <br><br>
+  {% endif %}
+  {% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+
+<!--  {% for post_id, post in posts.items() %}-->
+<!--    <article class="post">-->
+<!--      <header>-->
+<!--        {{ post }}-->
+<!--        {% for pict in post['picts'] %}-->
+<!--          <div>-->
+<!--            <a href=""><img src= {{ pict }} alt="HTML tutorial" style="width:42px;height:42px;"></a>-->
+<!--          </div>-->
+<!--        {% endfor %}-->
+<!--        <div>-->
+<!--          <h1>{{ post['title'] }}</h1>-->
+<!--          <div class="about">by {{ post['name'] }} on {{ post['datetime'].strftime('%Y-%m-%d') }}</div>-->
+<!--        </div>-->
+<!--        {{ g.user['id'] }}-->
+<!--        {{ post.keys(), post['pid'], post['title'], post['datetime'], post['uid'], post['name'] }}-->
+<!--        {% if g.user['id'] == post['uid'] %}-->
+<!--          <a class="action" href="{{ url_for('blog.update', id=post['pid']) }}">Edit</a>-->
+<!--        {% endif %}-->
+<!--      </header>-->
+<!--      <p class="body">{{ post['message'] }}</p>-->
+<!--    </article>-->
+<!--    {% if not loop.last %}-->
+<!--      <hr>-->
+<!--    {% endif %}-->
+<!--  {% endfor %}-->
+{% endblock %}

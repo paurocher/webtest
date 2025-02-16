@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+
+    <div class="container container-date">
+      <div class="row row-cols-1 date">
+        <div class="col">
+          date
+        </div>
+      </div>
+    </div>
+    <div class="container text-center container-tweak">
+      <div class="row row-cols-2 align-items-center">
+          <div class="col">
+            <a href="http://www.google.com" target="_blank">
+              <img src="/static/pictures/JKL/012.jpg" class="img-thumbnail wall-img" alt="">
+            </a>
+          </div>
+          <div class="col">
+            <a href="http://www.google.com" target="_blank">
+              <img src="/static/pictures/JKL/021.jpg" class="img-thumbnail wall-img" alt="">
+            </a>
+          </div>
+          <div class="col">
+            <a href="http://www.google.com" target="_blank">
+              <img src="/static/pictures/JKL/031.jpg" class="img-thumbnail wall-img" alt="">
+            </a>
+          </div>
+          <div class="col">
+<!--              <img src="/static/pictures/JKL/052.jpg" class="img-thumbnail wall-img" alt="...">-->
+            <form action="/full_screen_carousel">
+              <input type="image" class="img-thumbnail wall-img" id="image" src="/static/pictures/JKL/052.jpg" alt="">
+            </form>
+          </div>
+      </div>
+    </div>
+    <div class="container text-center container-tweak">
+      <div class="row row-cols-1">
+        <div class="col author">
+          Name Surname
+        </div>
+        <hr>
+        <div class="col">
+          <h1>Title here</h1>
+          <p align="left">Message here
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

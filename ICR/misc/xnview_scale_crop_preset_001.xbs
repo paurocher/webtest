@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><XnView_script version="1.0" name="xnview_scale_crop_preset_001">
+    <Resize mode="4" width="500" height="500" unit="0" ratio="true" orientation="false" enlarge="1" resample="7" gamma_correct="false"/>
+    <Canvas_resize mode="0" width="500" height="500" width2="100" height2="100" width3="1" height3="1" unit="0" relative="false" ratio="true" orientation="false" color="#ffffff" colorFlag="false" colorAt="0" alpha="255" position="4"/>
+    <Output folder="/home/fuku/PycharmProjects/webtest/ICR/static/images/2024_12/thumbnails" filename="{Filename}_result" case="0" startIndex="1" format="JPEG">
+        <Options overwrite="2" orgDate="true" keepMeta="true" keepICC="false" keepFolder="false" checkFilesize="false" keepParentFolder="false" keepExtension="false" delOrg="false" multipage="false" allPages="false" openExplorer="false" beep="true" openBrowser="false" clearItems="false"/>
+        <JPEG quality="90" progressive="false" optimizeHuffman="false" rebuildThumb="true" orgQuality="false" DCTMethod="2" subSampling="2" smoothFactor="0"/>
+    </Output>
+</XnView_script>

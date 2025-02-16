@@ -1,0 +1,111 @@
+/* Size for brand */
+nav .navbar-brand {
+    font-size: xx-large;
+}
+
+/* Colors for brand */
+nav .navbar-brand .blue {
+    color: #537fbe;
+}
+
+nav .navbar-brand .red {
+    color: #ea433b;
+}
+
+nav .navbar-brand .yellow {
+    color: #f5b82e;
+}
+
+nav .navbar-brand .green {
+    color: #2e944b;
+}
+
+table {
+    text-align: right;
+}
+
+tfoot {
+    font-weight: bold;
+}
+
+.crop {
+    width: 200px;
+    height: 150px;
+    overflow: hidden;
+}
+
+.crop img {
+    width: 400px;
+    height: 300px;
+    margin: -75px 0 0 -100px;
+}
+
+.btn-group img {
+    max-height: 100px;
+}
+
+/*
+.carousel-image {
+    height: 50vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+ }
+ */
+/*
+.bg-img-1 {
+    background-image: url("/static/pictures/JKL/001.jpg")
+}
+.bg-img-2 {
+    background-image: url("/static/pictures/JKL/002.jpg")
+}
+.bg-img-3 {
+    background-image: url("/static/pictures/JKL/004.jpg")
+}
+*/
+
+.wall-img {
+    max-height: 25vh;
+}
+
+.container-tweak {
+    max-width: 50vh;
+    background-color: #00000033;
+    padding: 20px;
+    border-top: 2px solid white;
+}
+.container-date {
+    max-width: 50vh;
+    height: 20px;
+    background-color: #00000033;
+    padding: 0px 10px;
+    text-align: right;
+}
+
+.author {
+    text-align: left;
+    font-size: 12px;
+}
+
+/*
+.carousel-inner {
+    max-height: 50vh;
+}
+
+.carousel-inner img {
+    object-fit: cover;
+}
+*/
+
+@media screen and (orientation:landscape) {
+    .carousel img {
+        max-height: 100vh;
+    }
+}
+
+@media screen and (orientation:portrait) {
+    .carousel img {
+        max-height: 100vh;
+        object-fit: scale-down;
+    }
+}

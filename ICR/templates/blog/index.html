@@ -16,6 +16,8 @@
 
 
 {% for post_id, post in posts.items() %}
+  {{ post_id }}
+  {{ post }}
 <div class="card min-vw-10 max-vw-20">
 
     <div class="card-header">
@@ -55,14 +57,23 @@
       <p class="card-text text-start">{{ post['message'] }}</p>
 <!--      <a href="#" class="btn btn-primary">Go somewhere</a>-->
       {% if g.user['id'] == post['uid'] %}
-        <a class="action" href="{{ url_for('blog.update', id=post['pid']) }}">Edit</a>
+        <a class="action" href="{{ url_for('blog.edit', id=post['pid']) }}">Edit</a>
       {% endif %}
    </div>
 
 
   <div class="card-footer">
     <div id="location" class="container'fluid text-start">
-      <button class="btn btn-primary rounded-pill btn-info" type="button">Button</button>
+      {% for loc in post['locations']['fnn'] %}
+        {% if loc %}
+          <button class="btn btn-primary rounded-pill btn-info" type="button">{{ loc }}</button>
+        {% endif %}
+      {% endfor %}
+      {% for loc in post['locations']['nfnn'] %}
+        {% if loc %}
+          <button class="btn btn-primary rounded-pill btn-info" type="button">{{ loc }}</button>
+        {% endif %}
+      {% endfor %}
     </div>
     <div id="tags" class="container'fluid text-start mt-2">
       <button class="btn btn-primary rounded-pill btn-info" type="button">Tag1</button>
@@ -117,7 +128,7 @@
 <!--        {{ g.user['id'] }}-->
 <!--        {{ post.keys(), post['pid'], post['title'], post['datetime'], post['uid'], post['name'] }}-->
 <!--        {% if g.user['id'] == post['uid'] %}-->
-<!--          <a class="action" href="{{ url_for('blog.update', id=post['pid']) }}">Edit</a>-->
+<!--          <a class="action" href="{{ url_for('blog.edit', id=post['pid']) }}">Edit</a>-->
 <!--        {% endif %}-->
 <!--      </header>-->
 <!--      <p class="body">{{ post['message'] }}</p>-->

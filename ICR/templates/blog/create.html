@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 
-
 {% block title %}New Post{% endblock %}
-
 
 {% block main %}
 g.is_mobile:
@@ -13,6 +11,9 @@ g.is_mobile:
         <input name="title" id="title" value="{{ request.form['title'] }}" required placeholder="Title">
     </div>
 
+    <div class="row mb-3">
+        <textarea name="message" id="message" placeholder="Message">{{ request.form['body'] }}</textarea>
+    </div>
 
     <div class="row mb-3" style="border:1px solid gray; padding:5px">
       <div class="row mb">Pictures</div>
@@ -28,21 +29,19 @@ g.is_mobile:
       </div>
     </div>
 
+    <div class="row mb-3">
+        <input name="location" id="location" value="{{ request.form['location'] }}"
+          placeholder="Location (list of comma separated locations)"
+          title="List of comma separated locations: location_01,location_02,location_03">
+    </div>
 
     <div class="row mb-3">
-        <textarea name="message" id="message" placeholder="Message">{{ request.form['body'] }}</textarea>
+        <input name="tags" id="tags" value="{{ request.form['tags'] }}"
+            placeholder="Tags (list of comma separated tags)"
+            title="List of comma separated tags: tag_01,tag_02,tag_03">
     </div>
-    <div class="row mb-3">
-        <input name="location" id="location" value="{{ request.form['location'] }}" required placeholder="Location">
-    </div>
-    <div class="row mb-3">
-        <input name="tags" id="tags" value="{{ request.form['tags'] }}" required placeholder="Tags">
-    </div>
+
       <input type="submit" class="btn btn-primary" value="Submit">
-      <button type="button" class="btn btn-info">Preview</button>
+
   </form>
-
-
-
-
 {% endblock %}

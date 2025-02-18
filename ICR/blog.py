@@ -24,12 +24,14 @@ bp = Blueprint("blog", __name__)
 
 @bp.route("/")
 def index():
-    db = get_db()
     # posts = db.execute(
-    #     "SELECT p.id pid, p.title, p.message, p.datetime, u.id uid, u.name"
-    #     " FROM posts p JOIN users u ON p.user_id = u.id"
-    #     " ORDER BY datetime DESC"
+    #     "SELECT p.id pid, p.title, p.message, p.datetime, u.id uid, u.name "
+    #     "FROM posts p "
+    #     "JOIN users u ON p.user_id = u.id "
+    #     "ORDER BY datetime DESC"
     # ).fetchall()
+
+    db = get_db()
 
     complete_posts = {}
 
@@ -45,12 +47,31 @@ def index():
         container = {}
         for key in keys:
             container[key] = post[key]
+
             picts = db.execute(
-                "SELECT path, thumb from pictures WHERE post_id = ?",
+                "SELECT path, thumb FROM pictures WHERE post_id = ?",
                 (post["pid"],)
             ).fetchall()
             container["picts"] = [pict["path"] for pict in picts]
             container["thumb"] = [pict["thumb"] for pict in picts]
+
+            locations = db.execute(
+                "SELECT * from locations where "
+                "id IN "
+                "(SELECT location_id FROM posts_locations WHERE post_id = ? )",
+                (post["pid"],)
+            ).fetchall()
+            container["locations"] = {"fnn": [], "nfnn": []}
+            container["locations"]["fnn"] = [
+                location["first_nation_name"] for location in locations
+            ]
+            container["locations"]["nfnn"] = [
+                location["non_first_nation_name"] for location in locations
+            ]
+        print(container["locations"])
+        for loc in container["locations"]["fnn"]:
+            print(loc, type(loc))
+
         complete_posts[post["pid"]] = container
         # TODO: pass in full picts (for carousel) and thumbnails (for blog)
     # pp(complete_posts)
@@ -138,9 +159,9 @@ def get_post(id, check_author=True):
     return post
 
 
-@bp.route("/<int:id>/update", methods=("GET", "POST"))
+@bp.route("/<int:id>/edit", methods=("GET", "POST"))
 @login_required
-def update(id):
+def edit(id):
     post = get_post(id)
 
     if request.method == "POST":
@@ -163,9 +184,8 @@ def update(id):
             db.commit()
             return redirect(url_for("blog.index"))
 
-    return render_template("blog/update.html", post=post)
+    return render_template("blog/edit.html", post=post)
 
-# TODO: add image deletion
 # TODO: add image upload
 # TODO: add tag add
 # TODO: add tag remove
@@ -176,6 +196,7 @@ def update(id):
 @bp.route("/<int:id>/delete", methods=("POST",))
 @login_required
 def delete(id):
+    # TODO: add image deletion
     get_post(id)
     db = get_db()
     db.execute("DELETE FROM posts WHERE id = ?", (id,))

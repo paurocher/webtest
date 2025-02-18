@@ -2,14 +2,19 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS pictures;
 DROP TABLE IF EXISTS tags;
+DROP TABLE IF EXISTS posts_tags;
 DROP TABLE IF EXISTS icons;
+DROP TABLE IF EXISTS locations;
+DROP TABLE IF EXISTS posts_locations;
+DROP TABLE IF EXISTS likes;
 
 CREATE TABLE users(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT UNIQUE NOT NULL,
         icon TEXT,
         email TEXT UNIQUE,
-        hash TEXT NOT NULL);
+        hash TEXT NOT NULL
+);
 
 CREATE TABLE posts(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -17,30 +22,45 @@ CREATE TABLE posts(
         title TEXT NOT NULL,
         message TEXT,
         location TEXT,
-        datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);
+        datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        tags T
+);
 
 CREATE TABLE pictures(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         post_id INTEGER NOT NULL,
         picture_order INTEGER NOT NULL,
         path TEXT NOT NULL,
-        thumb TEXT NOT NULL);
+        thumb TEXT NOT NULL
+);
 
 CREATE TABLE tags(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        tag TEXT NOT NULL
+);
+
+CREATE TABLE posts_tags(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         post_id INTEGER NOT NULL,
-        tag TEXT NOT NULL);
+        tag_id INTEGER NOT NULL
+);
 
 CREATE TABLE icons(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         icon TEXT NOT NULL,
-        alt_text TEXT NOT NULL);
+        alt_text TEXT NOT NULL
+);
 
 CREATE TABLE locations(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        location TEXT NOT NULL,
-        first_nation_name TEXT NOT NULL,
-        non_first_nation_name TEXT NOT NULL
+        first_nation_name TEXT,
+        non_first_nation_name TEXT
+);
+
+CREATE TABLE posts_locations(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        post_id INTEGER NOT NULL,
+        location_id INTEGER NOT NULL
 );
 
 CREATE TABLE likes(
@@ -59,13 +79,12 @@ VALUES ('y', '2', 'y@gmail.com', 'scrypt:32768:8:1$A6n4gQYyUazMo5ht$d3184c265be6
 INSERT INTO users (name, icon, email, hash)
 VALUES ('z', '3', 'z@gmail.com', 'scrypt:32768:8:1$uSWOxm9ncW10TAVg$79fdbc186871ce029e0f8ab211ee10b001632c96c3d557ec98b58e47f788ee8bf967fcbb5471bb674b47e305a949c1af0bd8db77123f2b2fc38f7b20a1b348fe');
 
-
 INSERT INTO posts (user_id, title, message, location, datetime)
 VALUES (
 1,
 'First time ice climbing',
 'Before I started ice climbing, I thought ice axes were like wood axes, used to chop through ice. I was wrong. The first time I held ice axes, I was struck by their lightness and precision. The instructor demonstrated how to use them to make precise placements in the ice.',
-'La Montagne d Argent',
+'Weir',
 '2022-01-01 11:03:27'
 );
 INSERT INTO posts (user_id, title, message, location, datetime)
@@ -81,7 +100,7 @@ VALUES (
 1,
 'Third experience',
 'The third time I went ice climbing was a surreal experience. We ventured to a remote location, and as we hiked up the mountain, the sound of crunching snow beneath our feet was all that broke the silence. The ice wall glinted in the morning sun, and I felt a rush of excitement as I strapped on my crampons and harness. But as I began to climb, I noticed we were not alone. A herd of Rocky Mountain goats emerged from the forest, their eyes fixed on us. They wandered closer, their fur fluffed up against the cold, and I felt a sense of wonder. We shared the frozen turf of grass as popsicles, and I felt a deep connection to these creatures and this land. The climb was challenging, but the experience was made all the more special by the presence of these majestic animals. As I reached the top, I felt a sense of accomplishment, not just because of the climb, but because I had shared it with the goats.',
-'Topaze',
+'Lac Silvère',
 '2023-12-21 08:21:43'
 );
 
@@ -118,7 +137,6 @@ VALUES (3,
 'Sharpen your ice axe by holding it at a 20 degree angle and running it along a whetstone. Switch sides and repeat. Sharpen crampons by holding them vertically and running them along a whetstone at a 20 degree angle. Do not sharpen crampons too much, as it can weaken them.',
 '2024-04-20 12:11:53'
 );
-
 
 INSERT INTO pictures (post_id, picture_order, path, thumb)
 VALUES (1, 1, 'static/images/2024_12/pictures/2020_03_01_08_47_12.jpg',
@@ -159,17 +177,63 @@ INSERT INTO pictures (post_id, picture_order, path, thumb)
 VALUES (3, 4, 'static/images/2024_12/pictures/2021_01_30_14_10_17.jpg',
 'static/images/2024_12/thumbnails/2021_01_30_14_10_17_tmb.jpg');
 
+INSERT INTO tags (tag)
+VALUES ('tag_01');
+INSERT INTO tags (tag)
+VALUES ('tag_02');
+INSERT INTO tags (tag)
+VALUES ('tag_03');
 
-INSERT INTO tags (post_id, tag)
-VALUES (1, 'tag_01');
-INSERT INTO tags (post_id, tag)
-VALUES (1, 'tag_02');
-INSERT INTO tags (post_id, tag)
-VALUES (1, 'tag_03');
+INSERT INTO icons (icon, alt_text)
+VALUES ('static/icons/icon_01.png', 'icon1');
+INSERT INTO icons (icon, alt_text)
+VALUES ('static/icons/icon_02.png', 'icon2');
+INSERT INTO icons (icon, alt_text)
+VALUES ('static/icons/icon_03.png', 'icon3');
 
-INSERT INTO icons (id, icon, alt_text)
-VALUES (1, 'static/icons/icon_01.png', 'icon1');
-INSERT INTO icons (id, icon, alt_text)
-VALUES (2, 'static/icons/icon_02.png', 'icon2');
-INSERT INTO icons (id, icon, alt_text)
-VALUES (3, 'static/icons/icon_03.png', 'icon3');
+INSERT INTO locations (non_first_nation_name)
+VALUES ("Shawbridge");
+INSERT INTO locations (first_nation_name, non_first_nation_name)
+VALUES ("native_Weir", "Weir");
+INSERT INTO locations (non_first_nation_name)
+VALUES ("Lac Sylvère");
+
+INSERT INTO posts_tags (post_id, tag_id)
+VALUES (1, 1);
+INSERT INTO posts_tags (post_id, tag_id)
+VALUES (1, 2);
+INSERT INTO posts_tags (post_id, tag_id)
+VALUES (1, 3);
+INSERT INTO posts_tags (post_id, tag_id)
+VALUES (2, 1);
+INSERT INTO posts_tags (post_id, tag_id)
+VALUES (3, 2);
+INSERT INTO posts_tags (post_id, tag_id)
+VALUES (4, 3);
+INSERT INTO posts_tags (post_id, tag_id)
+VALUES (5, 3);
+INSERT INTO posts_tags (post_id, tag_id)
+VALUES (5, 1);
+INSERT INTO posts_tags (post_id, tag_id)
+VALUES (6, 1);
+INSERT INTO posts_tags (post_id, tag_id)
+VALUES (7, 2);
+INSERT INTO posts_tags (post_id, tag_id)
+VALUES (8, 3);
+INSERT INTO posts_tags (post_id, tag_id)
+VALUES (8, 2);
+
+INSERT INTO posts_locations (post_id, location_id)
+VALUES (1, 1);
+INSERT INTO posts_locations (post_id, location_id)
+VALUES (1, 3);
+INSERT INTO posts_locations (post_id, location_id)
+VALUES (3, 2);
+INSERT INTO posts_locations (post_id, location_id)
+VALUES (4, 3);
+INSERT INTO posts_locations (post_id, location_id)
+VALUES (5, 3);
+INSERT INTO posts_locations (post_id, location_id)
+VALUES (7, 2);
+INSERT INTO posts_locations (post_id, location_id)
+VALUES (8, 1);

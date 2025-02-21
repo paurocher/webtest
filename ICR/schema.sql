@@ -4,8 +4,10 @@ DROP TABLE IF EXISTS pictures;
 DROP TABLE IF EXISTS tags;
 DROP TABLE IF EXISTS posts_tags;
 DROP TABLE IF EXISTS icons;
-DROP TABLE IF EXISTS locations;
-DROP TABLE IF EXISTS posts_locations;
+DROP TABLE IF EXISTS fn_locations;
+DROP TABLE IF EXISTS nfn_locations;
+DROP TABLE IF EXISTS posts_fn_locations;
+DROP TABLE IF EXISTS posts_nfn_locations;
 DROP TABLE IF EXISTS likes;
 
 CREATE TABLE users(
@@ -22,8 +24,7 @@ CREATE TABLE posts(
         title TEXT NOT NULL,
         message TEXT,
         location TEXT,
-        datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        tags T
+        datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE pictures(
@@ -51,13 +52,23 @@ CREATE TABLE icons(
         alt_text TEXT NOT NULL
 );
 
-CREATE TABLE locations(
+CREATE TABLE fn_locations(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        first_nation_name TEXT,
-        non_first_nation_name TEXT
+        toponym TEXT
 );
 
-CREATE TABLE posts_locations(
+CREATE TABLE nfn_locations(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        toponym TEXT
+);
+
+CREATE TABLE posts_fn_locations(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        post_id INTEGER NOT NULL,
+        location_id INTEGER NOT NULL
+);
+
+CREATE TABLE posts_nfn_locations(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         post_id INTEGER NOT NULL,
         location_id INTEGER NOT NULL
@@ -177,12 +188,9 @@ INSERT INTO pictures (post_id, picture_order, path, thumb)
 VALUES (3, 4, 'static/images/2024_12/pictures/2021_01_30_14_10_17.jpg',
 'static/images/2024_12/thumbnails/2021_01_30_14_10_17_tmb.jpg');
 
-INSERT INTO tags (tag)
-VALUES ('tag_01');
-INSERT INTO tags (tag)
-VALUES ('tag_02');
-INSERT INTO tags (tag)
-VALUES ('tag_03');
+INSERT INTO tags (tag) VALUES ('ice');
+INSERT INTO tags (tag) VALUES ('conditions');
+INSERT INTO tags (tag) VALUES ('accident');
 
 INSERT INTO icons (icon, alt_text)
 VALUES ('static/icons/icon_01.png', 'icon1');
@@ -191,49 +199,47 @@ VALUES ('static/icons/icon_02.png', 'icon2');
 INSERT INTO icons (icon, alt_text)
 VALUES ('static/icons/icon_03.png', 'icon3');
 
-INSERT INTO locations (non_first_nation_name)
+INSERT INTO fn_locations (toponym)
+VALUES ("native-Lac Du Rocher");
+INSERT INTO fn_locations (toponym)
+VALUES ("native_Weir");
+INSERT INTO fn_locations (toponym)
+VALUES ("native-Lac Sylvère");
+INSERT INTO fn_locations (toponym)
+VALUES ("Coaticook");
+
+INSERT INTO nfn_locations (toponym)
 VALUES ("Shawbridge");
-INSERT INTO locations (first_nation_name, non_first_nation_name)
-VALUES ("native_Weir", "Weir");
-INSERT INTO locations (non_first_nation_name)
+INSERT INTO nfn_locations (toponym)
+VALUES ("Weir");
+INSERT INTO nfn_locations (toponym)
 VALUES ("Lac Sylvère");
 
-INSERT INTO posts_tags (post_id, tag_id)
-VALUES (1, 1);
-INSERT INTO posts_tags (post_id, tag_id)
-VALUES (1, 2);
-INSERT INTO posts_tags (post_id, tag_id)
-VALUES (1, 3);
-INSERT INTO posts_tags (post_id, tag_id)
-VALUES (2, 1);
-INSERT INTO posts_tags (post_id, tag_id)
-VALUES (3, 2);
-INSERT INTO posts_tags (post_id, tag_id)
-VALUES (4, 3);
-INSERT INTO posts_tags (post_id, tag_id)
-VALUES (5, 3);
-INSERT INTO posts_tags (post_id, tag_id)
-VALUES (5, 1);
-INSERT INTO posts_tags (post_id, tag_id)
-VALUES (6, 1);
-INSERT INTO posts_tags (post_id, tag_id)
-VALUES (7, 2);
-INSERT INTO posts_tags (post_id, tag_id)
-VALUES (8, 3);
-INSERT INTO posts_tags (post_id, tag_id)
-VALUES (8, 2);
+INSERT INTO posts_tags (post_id, tag_id) VALUES (1, 1);
+INSERT INTO posts_tags (post_id, tag_id) VALUES (1, 2);
+INSERT INTO posts_tags (post_id, tag_id) VALUES (1, 3);
+INSERT INTO posts_tags (post_id, tag_id) VALUES (2, 1);
+INSERT INTO posts_tags (post_id, tag_id) VALUES (3, 2);
+INSERT INTO posts_tags (post_id, tag_id) VALUES (4, 3);
+INSERT INTO posts_tags (post_id, tag_id) VALUES (5, 3);
+INSERT INTO posts_tags (post_id, tag_id) VALUES (5, 1);
+INSERT INTO posts_tags (post_id, tag_id) VALUES (6, 1);
+INSERT INTO posts_tags (post_id, tag_id) VALUES (7, 2);
+INSERT INTO posts_tags (post_id, tag_id) VALUES (8, 3);
+INSERT INTO posts_tags (post_id, tag_id) VALUES (8, 2);
+--
+INSERT INTO posts_fn_locations (post_id, location_id) VALUES (1, 1);
+INSERT INTO posts_fn_locations (post_id, location_id) VALUES (1, 3);
+INSERT INTO posts_fn_locations (post_id, location_id) VALUES (3, 2);
+INSERT INTO posts_fn_locations (post_id, location_id) VALUES (4, 3);
+INSERT INTO posts_fn_locations (post_id, location_id) VALUES (5, 3);
+INSERT INTO posts_fn_locations (post_id, location_id) VALUES (7, 2);
+INSERT INTO posts_fn_locations (post_id, location_id) VALUES (8, 1);
 
-INSERT INTO posts_locations (post_id, location_id)
-VALUES (1, 1);
-INSERT INTO posts_locations (post_id, location_id)
-VALUES (1, 3);
-INSERT INTO posts_locations (post_id, location_id)
-VALUES (3, 2);
-INSERT INTO posts_locations (post_id, location_id)
-VALUES (4, 3);
-INSERT INTO posts_locations (post_id, location_id)
-VALUES (5, 3);
-INSERT INTO posts_locations (post_id, location_id)
-VALUES (7, 2);
-INSERT INTO posts_locations (post_id, location_id)
-VALUES (8, 1);
+INSERT INTO posts_nfn_locations (post_id, location_id) VALUES (1, 2);
+INSERT INTO posts_nfn_locations (post_id, location_id) VALUES (2, 1);
+INSERT INTO posts_nfn_locations (post_id, location_id) VALUES (4, 2);
+INSERT INTO posts_nfn_locations (post_id, location_id) VALUES (4, 3);
+INSERT INTO posts_nfn_locations (post_id, location_id) VALUES (6, 3);
+INSERT INTO posts_nfn_locations (post_id, location_id) VALUES (7, 2);
+INSERT INTO posts_nfn_locations (post_id, location_id) VALUES (7, 1);

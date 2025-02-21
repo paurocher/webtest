@@ -24,13 +24,6 @@ bp = Blueprint("blog", __name__)
 
 @bp.route("/")
 def index():
-    # posts = db.execute(
-    #     "SELECT p.id pid, p.title, p.message, p.datetime, u.id uid, u.name "
-    #     "FROM posts p "
-    #     "JOIN users u ON p.user_id = u.id "
-    #     "ORDER BY datetime DESC"
-    # ).fetchall()
-
     db = get_db()
 
     complete_posts = {}
@@ -48,6 +41,7 @@ def index():
         for key in keys:
             container[key] = post[key]
 
+            # images
             picts = db.execute(
                 "SELECT path, thumb FROM pictures WHERE post_id = ?",
                 (post["pid"],)
@@ -55,9 +49,9 @@ def index():
             container["picts"] = [pict["path"] for pict in picts]
             container["thumb"] = [pict["thumb"] for pict in picts]
 
+            # locations
             locations = db.execute(
-                "SELECT * from locations where "
-                "id IN "
+                "SELECT * FROM locations where id IN "
                 "(SELECT location_id FROM posts_locations WHERE post_id = ? )",
                 (post["pid"],)
             ).fetchall()
@@ -68,9 +62,15 @@ def index():
             container["locations"]["nfnn"] = [
                 location["non_first_nation_name"] for location in locations
             ]
-        print(container["locations"])
-        for loc in container["locations"]["fnn"]:
-            print(loc, type(loc))
+
+            # tags
+            tags = db.execute(
+                "SELECT * FROM tags WHERE id IN "
+                "(SELECT tag_id FROM posts_tags WHERE post_id = ? )",
+                (post["pid"],)
+            ).fetchall()
+            container["tags"] = [tag["tag"] for tag in tags]
+
 
         complete_posts[post["pid"]] = container
         # TODO: pass in full picts (for carousel) and thumbnails (for blog)
@@ -92,16 +92,6 @@ def create():
         mobile = False
 
     if request.method == "POST":
-        # process images
-        images = None
-        if "files" in request.files:
-            images = image_process(
-                [
-                    request.files.getlist("files"),
-                    request.files.getlist("cam_files")
-                ]
-            )
-
         title = request.form["title"]
         body = request.form["message"]
 
@@ -115,7 +105,27 @@ def create():
             flash(error)
             return render_template("blog/create.html", mobile=mobile)
 
+        # get and process images
+        images = None
+        if "files" in request.files:
+            images = image_process(
+                [
+                    request.files.getlist("files"),
+                    request.files.getlist("cam_files")
+                ]
+            )
+
+        # get locations
+        fn_locations = request.form["fn_location"].split(",")
+        nfn_locations = request.form["nfn_location"].split(",")
+        locations = {"fn": fn_locations, "nfn": nfn_locations}
+
+        # get tags
+        tags = request.form["tags"].split(",")
+
         db = get_db()
+
+        # first insert the post, so we can get its id
         cursor = db.execute(
             "INSERT INTO posts (title, message, user_id) "
             "VALUES (?, ?, ?)",
@@ -124,6 +134,7 @@ def create():
         db.commit()
         last_post = cursor.lastrowid
 
+        # insert images using the post id reference
         if images:
             # print(images)
             db = get_db()
@@ -136,6 +147,26 @@ def create():
                     (last_post, i + 1, image[0], image[1])
                 )
                 db.commit()
+
+        # insert locations using the post id reference
+        db = get_db()
+        for loc in locations:
+            db.execute(
+                "INSERT INTO posts_locations (post_id, location_id) "
+                "VALUES (?, ?)",
+                (last_post, loc)
+            )
+            db.commit()
+
+        # insert tags using the post id reference
+        db = get_db()
+        for tag in tags:
+            db.execute(
+                "INSERT INTO posts_tags (post_id, tag_id) "
+                "VALUES (?, ?)",
+                (last_post, tag)
+            )
+            db.commit()
 
         return redirect(url_for("blog.index"))
 

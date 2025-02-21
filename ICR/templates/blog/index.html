@@ -76,21 +76,10 @@
       {% endfor %}
     </div>
     <div id="tags" class="container'fluid text-start mt-2">
-      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag1</button>
-      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag2</button>
-      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag3</button>
-      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag4</button>
-      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag5</button>
-      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag1</button>
-      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag2</button>
-      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag3</button>
-      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag4</button>
-      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag5</button>
-      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag1</button>
-      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag2</button>
-      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag3</button>
-      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag4</button>
-      <button class="btn btn-primary rounded-pill btn-info" type="button">Tag5</button>
+      {% for tag in post['tags'] %}
+        <button class="btn btn-primary rounded-pill btn-info" type="button">
+          {{ tag }}</button>
+      {% endfor %}
     </div>
   </div>
 

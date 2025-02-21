@@ -22,16 +22,19 @@ g.is_mobile:
           {% if mobile %}
 <!--            <label class="col-sm-1"> </label>-->
             <input type="file" accept="image/*" capture="camera" name="cam_files" id="cam_files">
-            <label for="cam_files">Choose a file</label>
+            <label for="cam_files">Camera</label>
 <!--            <button type="button" class="btn btn-info">Camera</button>-->
           {% endif %}
         </div>
       </div>
-    </div>
+<!--    </div>-->
 
     <div class="row mb-3">
-        <input name="location" id="location" value="{{ request.form['location'] }}"
-          placeholder="Location (list of comma separated locations)"
+        <input name="location" id="fn_location" value="{{ request.form['location'] }}"
+          placeholder="First Nation Location Names (list of comma separated locations)"
+          title="List of comma separated locations: location_01,location_02,location_03">
+        <input name="location" id="nfn_location" value="{{ request.form['location'] }}"
+          placeholder="Non-First Nation Location Names (list of comma separated locations)"
           title="List of comma separated locations: location_01,location_02,location_03">
     </div>
 

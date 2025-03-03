@@ -34,6 +34,8 @@ www.rogers.com
  - Playing with my modem to open ports was a total failure. Then I realized I did not have my username and password to reconfigure the modem. The gentle people at Rogers helped me set it up back again. And this time I made sure to note down the configuration, username and password!! Now I can test my site in my computers and phones!! 
 
 
+https://ttl255.com/jinja2-tutorial-part-1-introduction-and-variable-substitution/
+ - Great and detailed Jinja tutorials.
 
 ## Motivations
 - Centralize communication channels between ice climbers. 

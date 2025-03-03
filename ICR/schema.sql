@@ -23,7 +23,6 @@ CREATE TABLE posts(
         user_id INTEGER NOT NULL,
         title TEXT NOT NULL,
         message TEXT,
-        location TEXT,
         datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -37,7 +36,7 @@ CREATE TABLE pictures(
 
 CREATE TABLE tags(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        tag TEXT NOT NULL
+        tag TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE posts_tags(
@@ -54,12 +53,12 @@ CREATE TABLE icons(
 
 CREATE TABLE fn_locations(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        toponym TEXT
+        toponym TEXT UNIQUE
 );
 
 CREATE TABLE nfn_locations(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        toponym TEXT
+        toponym TEXT UNIQUE
 );
 
 CREATE TABLE posts_fn_locations(
@@ -90,43 +89,38 @@ VALUES ('y', '2', 'y@gmail.com', 'scrypt:32768:8:1$A6n4gQYyUazMo5ht$d3184c265be6
 INSERT INTO users (name, icon, email, hash)
 VALUES ('z', '3', 'z@gmail.com', 'scrypt:32768:8:1$uSWOxm9ncW10TAVg$79fdbc186871ce029e0f8ab211ee10b001632c96c3d557ec98b58e47f788ee8bf967fcbb5471bb674b47e305a949c1af0bd8db77123f2b2fc38f7b20a1b348fe');
 
-INSERT INTO posts (user_id, title, message, location, datetime)
+INSERT INTO posts (user_id, title, message, datetime)
 VALUES (
 1,
 'First time ice climbing',
 'Before I started ice climbing, I thought ice axes were like wood axes, used to chop through ice. I was wrong. The first time I held ice axes, I was struck by their lightness and precision. The instructor demonstrated how to use them to make precise placements in the ice.',
-'Weir',
 '2022-01-01 11:03:27'
 );
-INSERT INTO posts (user_id, title, message, location, datetime)
+INSERT INTO posts (user_id, title, message, datetime)
 VALUES (
 1,
 'The first fall',
 'My first ice climbing fall was a memorable one. I was trying to make a tricky placement when my axe slipped out of the ice. I landed on my side, and as I sat up, I felt something peculiar poking into my left leg. I looked down to see six sausages sizzling on the fire my friends had built, stuck to my crampon. I laughed as my friends cheered and snapped photos. It was a surreal moment, and I was grateful that my first fall was not more serious. And of course, I had a snack ready to go afterwards!',
-'Shawbridge',
 '2023-02-01 12:01:47'
 );
-INSERT INTO posts (user_id, title, message, location, datetime)
+INSERT INTO posts (user_id, title, message, datetime)
 VALUES (
 1,
 'Third experience',
 'The third time I went ice climbing was a surreal experience. We ventured to a remote location, and as we hiked up the mountain, the sound of crunching snow beneath our feet was all that broke the silence. The ice wall glinted in the morning sun, and I felt a rush of excitement as I strapped on my crampons and harness. But as I began to climb, I noticed we were not alone. A herd of Rocky Mountain goats emerged from the forest, their eyes fixed on us. They wandered closer, their fur fluffed up against the cold, and I felt a sense of wonder. We shared the frozen turf of grass as popsicles, and I felt a deep connection to these creatures and this land. The climb was challenging, but the experience was made all the more special by the presence of these majestic animals. As I reached the top, I felt a sense of accomplishment, not just because of the climb, but because I had shared it with the goats.',
-'Lac Silvère',
 '2023-12-21 08:21:43'
 );
 
-INSERT INTO posts (user_id, title, message, location, datetime)
+INSERT INTO posts (user_id, title, message, datetime)
 VALUES (2,
 'Shawbridge in great shape',
 'I climbed the ice wall at Shawbridge yesterday and it was in great shape! The ice was thick and solid, and the anchors were all in good condition. The ice was a bit brittle, but not so much that it was a problem. The approach was easy, with good snow cover and no crevasses. The climb was challenging, but the scenery was beautiful and it was a great workout. I highly recommend it if you are looking for a fun and challenging ice climb.',
-'Shawbridge',
 '2023-12-21 08:21:43'
 );
-INSERT INTO posts (user_id, title, message, location, datetime)
+INSERT INTO posts (user_id, title, message, datetime)
 VALUES (2,
 'Weir is over',
 'The ice waterfall at Weir is all melted and is dangerous to climb. The ice is thin and brittle, and there are open holes everywhere. The anchors are also in bad condition, and the approach is a muddy mess. Don t bother going.',
-'Weir',
 '2024-02-11 08:00:56'
 );
 

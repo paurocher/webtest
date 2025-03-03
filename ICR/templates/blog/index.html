@@ -12,11 +12,10 @@
 
 {% block main %}
 
-<!--{% for post in posts.values() %} {{ post }} <br><br>{% endfor %}-->
+<!--{% for post in posts %} {{ post }} <br><br>{% endfor %}-->
 
 
-{% for post_id, post in posts.items() %}
-  {{ post_id }}
+{% for post in posts %}
   {{ post }}
 <div class="card min-vw-10 max-vw-20">
 
@@ -56,20 +55,20 @@
 <!--      <h6 class="card-subtitle mb-2 text-muted">Card Subtitle</h6>-->
       <p class="card-text text-start">{{ post['message'] }}</p>
 <!--      <a href="#" class="btn btn-primary">Go somewhere</a>-->
-      {% if g.user['id'] == post['uid'] %}
-        <a class="action" href="{{ url_for('blog.edit', id=post['pid']) }}">Edit</a>
+      {% if g.user['id'] == post['user_id'] %}
+        <a class="action" href="{{ url_for('blog.edit', post_id=post['id']) }}">Edit</a>
       {% endif %}
    </div>
 
 
   <div class="card-footer">
     <div id="location" class="container'fluid text-start">
-      {% for loc in post['locations']['fnn'] %}
+      {% for loc in post['locations']['fn'] %}
         {% if loc %}
           <button class="btn btn-primary rounded-pill btn-info" type="button">{{ loc }}</button>
         {% endif %}
       {% endfor %}
-      {% for loc in post['locations']['nfnn'] %}
+      {% for loc in post['locations']['nfn'] %}
         {% if loc %}
           <button class="btn btn-primary rounded-pill btn-info" type="button">{{ loc }}</button>
         {% endif %}
@@ -85,45 +84,9 @@
 
 </div>
 
-  {% if not loop.last %}
-    <br><br>
-  {% endif %}
+    {% if not loop.last %}
+      <br><br>
+    {% endif %}
   {% endfor %}
 
-
-
-
-
-
-
-
-
-
-
-
-<!--  {% for post_id, post in posts.items() %}-->
-<!--    <article class="post">-->
-<!--      <header>-->
-<!--        {{ post }}-->
-<!--        {% for pict in post['picts'] %}-->
-<!--          <div>-->
-<!--            <a href=""><img src= {{ pict }} alt="HTML tutorial" style="width:42px;height:42px;"></a>-->
-<!--          </div>-->
-<!--        {% endfor %}-->
-<!--        <div>-->
-<!--          <h1>{{ post['title'] }}</h1>-->
-<!--          <div class="about">by {{ post['name'] }} on {{ post['datetime'].strftime('%Y-%m-%d') }}</div>-->
-<!--        </div>-->
-<!--        {{ g.user['id'] }}-->
-<!--        {{ post.keys(), post['pid'], post['title'], post['datetime'], post['uid'], post['name'] }}-->
-<!--        {% if g.user['id'] == post['uid'] %}-->
-<!--          <a class="action" href="{{ url_for('blog.edit', id=post['pid']) }}">Edit</a>-->
-<!--        {% endif %}-->
-<!--      </header>-->
-<!--      <p class="body">{{ post['message'] }}</p>-->
-<!--    </article>-->
-<!--    {% if not loop.last %}-->
-<!--      <hr>-->
-<!--    {% endif %}-->
-<!--  {% endfor %}-->
 {% endblock %}

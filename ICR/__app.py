@@ -40,11 +40,6 @@ DB.row_factory = sqlite3.Row
 cursor = DB.cursor()
 
 
-
-
-
-
-
 @app.after_request
 def after_request(response):
     """Ensure responses aren't cached"""
@@ -58,7 +53,6 @@ def after_request(response):
 def full_screen_carousel():
     print("aaaaaaaaaaa")
     return render_template("full_screen_carousel.html")
-
 
 
 # @login_required

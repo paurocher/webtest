@@ -1,25 +1,65 @@
 {% extends 'base.html' %}
 
-{% block title %}Edit "{{ post['title'] }}"{% endblock %}
+{% block title %}Edit Post "{{ post['title'] }}"{% endblock %}
 
 {% block main %}
-  <form method="post">
-    <label for="title">Title</label>
-    <input name="title" id="title"
-      value="{{ request.form['title'] or post['title'] }}" required>
-    <label for="Message">Message</label>
-    <textarea name="message" id="message">{{ request.form['message'] or post['message'] }}</textarea>
-    <input type="submit" value="Save">
+g.is_mobile:
+<strong>{% if mobile %}True{% else %}False{% endif %}</strong>
+
+  <form method="post" enctype="multipart/form-data">
+    <div class="row mb-3">
+        <input name="title" id="title" value={{ post['title'] }} required placeholder="Title">
+    </div>
+
+    <div class="row mb-3">
+        <textarea name="message" id="message">{{ post['message'] }}</textarea>
+    </div>
+
+    <div class="row mb-3" style="border:1px solid gray; padding:5px">
+      <div class="row mb">Pictures</div>
+        Delete pictures:
+          <div class="row row-cols-2">
+          {% for thumb in post['thumb'] %}
+            <div class="col">
+              <img src={{ thumb }} class="img-fluid">
+            </div>
+          {% endfor %}
+          </div>
+
+        <div class="mb-3">
+          <input class="form-control" type="file" multiple name="files">
+          {% if mobile %}
+<!--            <label class="col-sm-1"> </label>-->
+            <input type="file" accept="image/*" capture="camera" name="cam_files" id="cam_files">
+            <label for="cam_files">Camera</label>
+<!--            <button type="button" class="btn btn-info">Camera</button>-->
+          {% endif %}
+        </div>
+    </div>
+<!--    </div>-->
+
+    <div class="row mb-3">
+        <input name="fn_location" id="fn_location"
+          title="List of comma separated locations: location_01,location_02,location_03"
+          value={{ post['locations']['fn']|join(",") }}>
+        <input name="nfn_location" id="nfn_location"
+          title="List of comma separated locations: location_01,location_02,location_03"
+          value={{ post['locations']['nfn']|join(",") }}>
+    </div>
+
+    <div class="row mb-3">
+        <input name="tags" id="tags"
+          title="List of comma separated tags: tag_01,tag_02,tag_03"
+          value={{ post['tags']|join(",") }}>
+    </div>
+
+      <input type="submit" class="btn btn-primary" value="Submit">
+
   </form>
-  <hr>
-  <form action="{{ url_for('blog.delete', id=post['id']) }}" method="post">
-    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
-  </form>
+{{ post }}
+
+{% for thumb in post['thumb'] %}
+<img src="{{url_for('', filename=thumb)}}">
+"{{url_for('static', filename='photos/image1.jpg')}}"
+{% endfor %}
 {% endblock %}
-
-
-<!--
-TODO:
-  - display the pictures and ability to delete them or upload new pictures.
-  - add, remove tags
--->

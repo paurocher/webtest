@@ -8,16 +8,17 @@ from flask import (
     request,
     url_for,
 )
+from flask.wrappers import Response
 import os
 from pprint import pprint as pp
 from user_agents import parse
-from werkzeug.exceptions import abort
+from werkzeug.user_agent import UserAgent
 from werkzeug.utils import secure_filename
 
 from ICR.__app import app
 from ICR.auth import login_required
 from ICR.db import get_db
-from ICR.helpers.misc import validate_file_type
+from ICR.helpers.sql_functions import insert, get_complete_posts, get_post
 from ICR.helpers.image_process import image_process
 
 bp = Blueprint("blog", __name__)
@@ -26,77 +27,47 @@ bp = Blueprint("blog", __name__)
 def index():
     db = get_db()
 
-    complete_posts = {}
-
-    posts = db.execute(
-        "SELECT p.id pid, p.title, p.message, p.datetime, u.id uid, u.name "
-        "FROM posts p "
-        "JOIN users u ON p.user_id = u.id "
-        "ORDER BY datetime DESC"
+    # get all entries in the posts table
+    # posts = db.execute(
+    #     "SELECT p.id pid, p.title, p.message, p.datetime, u.id uid, u.name "
+    #     "FROM posts p "
+    #     "JOIN users u ON p.user_id = u.id "
+    #     "ORDER BY datetime DESC"
+    # ).fetchall()
+    post_ids = db.execute(
+        "SELECT id FROM posts ORDER BY datetime DESC"
     ).fetchall()
 
-    for post in posts:
-        keys = post.keys()
-        container = {}
-        for key in keys:
-            container[key] = post[key]
+    post_ids = [post_id["id"] for post_id in post_ids]
+    print(post_ids)
 
-            # images
-            picts = db.execute(
-                "SELECT path, thumb FROM pictures WHERE post_id = ?",
-                (post["pid"],)
-            ).fetchall()
-            container["picts"] = [pict["path"] for pict in picts]
-            container["thumb"] = [pict["thumb"] for pict in picts]
-
-            # locations
-            locations = db.execute(
-                "SELECT * FROM locations where id IN "
-                "(SELECT location_id FROM posts_locations WHERE post_id = ? )",
-                (post["pid"],)
-            ).fetchall()
-            container["locations"] = {"fnn": [], "nfnn": []}
-            container["locations"]["fnn"] = [
-                location["first_nation_name"] for location in locations
-            ]
-            container["locations"]["nfnn"] = [
-                location["non_first_nation_name"] for location in locations
-            ]
-
-            # tags
-            tags = db.execute(
-                "SELECT * FROM tags WHERE id IN "
-                "(SELECT tag_id FROM posts_tags WHERE post_id = ? )",
-                (post["pid"],)
-            ).fetchall()
-            container["tags"] = [tag["tag"] for tag in tags]
-
-
-        complete_posts[post["pid"]] = container
-        # TODO: pass in full picts (for carousel) and thumbnails (for blog)
-    # pp(complete_posts)
+    # get all related data from ech post
+    complete_posts = get_complete_posts(post_ids)
+    print("f")
     return render_template("blog/index.html", posts=complete_posts)
 
 
 @bp.route("/create", methods=("GET", "POST"))
 @login_required
-def create():
+def create() -> str or Response:
     # get device
-    user_agent = request.headers.get("User-Agent")
-    user_agent_parsed = parse(user_agent)
-    device_type = ("Mobile" if user_agent_parsed.is_mobile else
-                   "Tablet" if user_agent_parsed.is_tablet else
-                   "Desktop")
-    mobile = True
+    user_agent: str = request.headers.get("User-Agent")
+    user_agent_parsed: UserAgent = parse(user_agent)
+    device_type: str = (
+        "Mobile" if user_agent_parsed.is_mobile else
+        "Tablet" if user_agent_parsed.is_tablet else
+        "Desktop"
+    )
+    mobile: bool = True
     if device_type == "Desktop":
         mobile = False
 
     if request.method == "POST":
-        title = request.form["title"]
-        body = request.form["message"]
+        title: str = request.form["title"]
+        body: str = request.form["message"]
 
         # check that required fields are not empty
-        error = None
+        error: str or None = None
         if not title:
             error = "Title is required."
         if not body:
@@ -106,7 +77,7 @@ def create():
             return render_template("blog/create.html", mobile=mobile)
 
         # get and process images
-        images = None
+        images: list or None = None
         if "files" in request.files:
             images = image_process(
                 [
@@ -115,85 +86,37 @@ def create():
                 ]
             )
 
-        # get locations
-        fn_locations = request.form["fn_location"].split(",")
-        nfn_locations = request.form["nfn_location"].split(",")
-        locations = {"fn": fn_locations, "nfn": nfn_locations}
+        # get locations, filter out empty strings
+        fn_locations: list = request.form["fn_location"].split(",")
+        fn_locations: list = [loc for loc in fn_locations if loc]
+        nfn_locations: list = request.form["nfn_location"].split(",")
+        nfn_locations: list = [loc for loc in nfn_locations if loc]
+        locations: dict = {"fn": fn_locations, "nfn": nfn_locations}
+        # print(f"{locations=}")
 
         # get tags
-        tags = request.form["tags"].split(",")
+        tags: list = request.form["tags"].split(",")
 
-        db = get_db()
-
-        # first insert the post, so we can get its id
-        cursor = db.execute(
-            "INSERT INTO posts (title, message, user_id) "
-            "VALUES (?, ?, ?)",
-            (title, body, g.user["id"])
-        )
-        db.commit()
-        last_post = cursor.lastrowid
-
-        # insert images using the post id reference
-        if images:
-            # print(images)
-            db = get_db()
-            for i, image in enumerate(images):
-                # print(image)
-                db.execute(
-                    "INSERT INTO pictures (post_id, picture_order, path, "
-                    "thumb) "
-                    "VALUES (?, ?, ?, ?)",
-                    (last_post, i + 1, image[0], image[1])
-                )
-                db.commit()
-
-        # insert locations using the post id reference
-        db = get_db()
-        for loc in locations:
-            db.execute(
-                "INSERT INTO posts_locations (post_id, location_id) "
-                "VALUES (?, ?)",
-                (last_post, loc)
-            )
-            db.commit()
-
-        # insert tags using the post id reference
-        db = get_db()
-        for tag in tags:
-            db.execute(
-                "INSERT INTO posts_tags (post_id, tag_id) "
-                "VALUES (?, ?)",
-                (last_post, tag)
-            )
-            db.commit()
+        post_data: dict = {
+            "title": title,
+            "body": body,
+            "images": images,
+            "locations": locations,
+            "tags": tags
+        }
+        insert(post_data)
 
         return redirect(url_for("blog.index"))
 
     return render_template("blog/create.html", mobile=mobile)
 
 
-def get_post(id, check_author=True):
-    post = get_db().execute(
-        "SELECT p.id, title, message, datetime, user_id, name"
-        " FROM posts p JOIN users u ON p.user_id = u.id"
-        " WHERE p.id = ?",
-        (id,)
-    ).fetchone()
 
-    if post is None:
-        abort(404, f"Post id {id} doesn't exist.")
-
-    if check_author and post["user_id"] != g.user["id"]:
-        abort(403)
-
-    return post
-
-
-@bp.route("/<int:id>/edit", methods=("GET", "POST"))
+@bp.route("/<int:post_id>/edit", methods=("GET", "POST"))
 @login_required
-def edit(id):
-    post = get_post(id)
+def edit(post_id):
+    db = get_db()
+    # post = get_post(post_id)
 
     if request.method == "POST":
         title = request.form["title"]
@@ -208,13 +131,22 @@ def edit(id):
         else:
             db = get_db()
             db.execute(
-                "UPDATE posts SET title = ?, message = ?"
-                " WHERE id = ?",
-                (title, body, id)
+                "UPDATE posts SET title = ?, message = ? "
+                "WHERE id = ?",
+                (title, body, post_id)
             )
             db.commit()
             return redirect(url_for("blog.index"))
 
+    # get all entries in the posts table
+    post_id = db.execute(
+        "SELECT id FROM posts ORDER BY datetime DESC"
+    ).fetchone()
+
+    print("POST")
+    print(f"{post_id=}")
+
+    post = get_complete_posts(post_id)[0]
     return render_template("blog/edit.html", post=post)
 
 # TODO: add image upload
@@ -224,13 +156,13 @@ def edit(id):
 # TODO: location tag remove
 
 
-@bp.route("/<int:id>/delete", methods=("POST",))
+@bp.route("/<int:post_id>/delete", methods=("POST",))
 @login_required
-def delete(id):
+def delete(post_id):
     # TODO: add image deletion
-    get_post(id)
+    get_post(post_id)
     db = get_db()
-    db.execute("DELETE FROM posts WHERE id = ?", (id,))
+    db.execute("DELETE FROM posts WHERE id = ?", (post_id,))
     db.commit()
     return redirect(url_for("blog.index"))
 

@@ -12,9 +12,11 @@ from werkzeug.datastructures import MultiDict, ImmutableMultiDict
 def mockup_FileStorage():
     # passing images outside the project to simulate an image upload
     images = [
-        "/home/fuku/Desktop/Hanae.jpg",
-        "/home/fuku/Desktop/Hanae_dibuix.jpg",
-        "/home/fuku/Desktop/Serena_dibuix.jpg",
+        "/home/fuku/PycharmProjects/webtest/tests/mockup_images/a.jpg",
+        "/home/fuku/PycharmProjects/webtest/tests/mockup_images/b.jpg",
+        "/home/fuku/PycharmProjects/webtest/tests/mockup_images/c.jpg",
+        "/home/fuku/PycharmProjects/webtest/tests/mockup_images/d.jpg",
+        "/home/fuku/PycharmProjects/webtest/tests/mockup_images/e.jpg",
     ]
 
     container = MultiDict()
@@ -24,7 +26,9 @@ def mockup_FileStorage():
 
         file = open(image, "rb")
         # print(file)
-        file_storage = FileStorage(file, name=name, filename=name, content_type="image/jpeg")
+        file_storage = FileStorage(
+            file, name=name, filename=name, content_type="image/jpeg"
+        )
         # print(file_storage)
         container.add("files", file_storage)
 

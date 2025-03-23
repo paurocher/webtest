@@ -144,47 +144,66 @@ VALUES (3,
 );
 
 INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (1, 1, 'static/images/2024_12/pictures/2020_03_01_08_47_12.jpg',
-'static/images/2024_12/thumbnails/2020_03_01_08_47_12_tmb.jpg');
+VALUES (1, 1, 'images/2024_12/pictures/2020_03_01_08_47_12.jpg',
+'images/2024_12/thumbnails/2020_03_01_08_47_12_tmb.jpg');
 INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (1, 2, 'static/images/2024_12/pictures/2020_03_01_10_24_16.jpg',
-'static/images/2024_12/thumbnails/2020_03_01_10_24_16_tmb.jpg');
+VALUES (1, 2, 'images/2024_12/pictures/2020_03_01_10_24_16.jpg',
+'images/2024_12/thumbnails/2020_03_01_10_24_16_tmb.jpg');
 INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (1, 3, 'static/images/2024_12/pictures/2020_03_01_11_48_17.jpg',
-'static/images/2024_12/thumbnails/2020_03_01_11_48_17_tmb.jpg');
+VALUES (1, 3, 'images/2024_12/pictures/2020_03_01_11_48_17.jpg',
+'images/2024_12/thumbnails/2020_03_01_11_48_17_tmb.jpg');
 INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (1, 4, 'static/images/2024_12/pictures/2020_03_01_11_48_26.jpg',
-'static/images/2024_12/thumbnails/2020_03_01_11_48_26_tmb.jpg');
+VALUES (1, 4, 'images/2024_12/pictures/2020_03_01_11_48_26.jpg',
+'images/2024_12/thumbnails/2020_03_01_11_48_26_tmb.jpg');
 
 INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (2, 1, 'static/images/2024_12/pictures/2020_03_01_13_39_21.jpg',
-'static/images/2024_12/thumbnails/2020_03_01_13_39_21_tmb.jpg');
+VALUES (2, 1, 'images/2024_12/pictures/2020_03_01_13_39_21.jpg',
+'images/2024_12/thumbnails/2020_03_01_13_39_21_tmb.jpg');
 INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (2, 2, 'static/images/2024_12/pictures/2020_03_01_13_39_29.jpg',
-'static/images/2024_12/thumbnails/2020_03_01_13_39_29_tmb.jpg');
+VALUES (2, 2, 'images/2024_12/pictures/2020_03_01_13_39_29.jpg',
+'images/2024_12/thumbnails/2020_03_01_13_39_29_tmb.jpg');
 INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (2, 3, 'static/images/2024_12/pictures/2021_01_30_09_50_38.jpg',
-'static/images/2024_12/thumbnails/2021_01_30_09_50_38_tmb.jpg');
+VALUES (2, 3, 'images/2024_12/pictures/2021_01_30_09_50_38.jpg',
+'images/2024_12/thumbnails/2021_01_30_09_50_38_tmb.jpg');
 INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (2, 4, 'static/images/2024_12/pictures/2021_01_30_14_08_19.jpg',
-'static/images/2024_12/thumbnails/2021_01_30_14_08_19_tmb.jpg');
+VALUES (2, 4, 'images/2024_12/pictures/2021_01_30_14_08_19.jpg',
+'images/2024_12/thumbnails/2021_01_30_14_08_19_tmb.jpg');
 
 INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (3, 1, 'static/images/2024_12/pictures/2021_01_30_14_09_19.jpg',
-'static/images/2024_12/thumbnails/2021_01_30_14_09_19_tmb.jpg');
+VALUES (3, 1, 'images/2024_12/pictures/2021_01_30_14_09_19.jpg',
+'images/2024_12/thumbnails/2021_01_30_14_09_19_tmb.jpg');
 INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (3, 2, 'static/images/2024_12/pictures/2021_01_30_14_09_22.jpg',
-'static/images/2024_12/thumbnails/2021_01_30_14_09_22_tmb.jpg');
+VALUES (3, 2, 'images/2024_12/pictures/2021_01_30_14_09_22.jpg',
+'images/2024_12/thumbnails/2021_01_30_14_09_22_tmb.jpg');
 INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (3, 3, 'static/images/2024_12/pictures/2021_01_30_14_10_12.jpg',
-'static/images/2024_12/thumbnails/2021_01_30_14_10_12_tmb.jpg');
+VALUES (3, 3, 'images/2024_12/pictures/2021_01_30_14_10_12.jpg',
+'images/2024_12/thumbnails/2021_01_30_14_10_12_tmb.jpg');
 INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (3, 4, 'static/images/2024_12/pictures/2021_01_30_14_10_17.jpg',
-'static/images/2024_12/thumbnails/2021_01_30_14_10_17_tmb.jpg');
+VALUES (3, 4, 'images/2024_12/pictures/2021_01_30_14_10_17.jpg',
+'images/2024_12/thumbnails/2021_01_30_14_10_17_tmb.jpg');
+
+INSERT INTO pictures (post_id, picture_order, path, thumb)
+VALUES (8, 1, 'images/2025_03/pictures/2025_03_05_06_29_38_0.jpg',
+'images/2025_03/thumbnails/2025_03_05_06_29_38_0_tmb.png');
+INSERT INTO pictures (post_id, picture_order, path, thumb)
+VALUES (8, 2, 'images/2025_03/pictures/2025_03_05_06_29_38_1.jpg',
+'images/2025_03/thumbnails/2025_03_05_06_29_38_1_tmb.png');
+INSERT INTO pictures (post_id, picture_order, path, thumb)
+VALUES (8, 3, 'images/2025_03/pictures/2025_03_05_06_29_38_2.jpg',
+'images/2025_03/thumbnails/2025_03_05_06_29_38_2_tmb.png');
+INSERT INTO pictures (post_id, picture_order, path, thumb)
+VALUES (8, 4, 'images/2025_03/pictures/2025_03_05_06_29_38_3.jpg',
+'images/2025_03/thumbnails/2025_03_05_06_29_38_3_tmb.png');
+INSERT INTO pictures (post_id, picture_order, path, thumb)
+VALUES (8, 5, 'images/2025_03/pictures/2025_03_05_06_29_38_4.jpg',
+'images/2025_03/thumbnails/2025_03_05_06_29_38_4_tmb.png');
+
 
 INSERT INTO tags (tag) VALUES ('ice');
 INSERT INTO tags (tag) VALUES ('conditions');
 INSERT INTO tags (tag) VALUES ('accident');
+INSERT INTO tags (tag) VALUES ('tip');
+INSERT INTO tags (tag) VALUES ('trick');
 
 INSERT INTO icons (icon, alt_text)
 VALUES ('static/icons/icon_01.png', 'icon1');
@@ -201,6 +220,10 @@ INSERT INTO fn_locations (toponym)
 VALUES ("native-Lac Sylvère");
 INSERT INTO fn_locations (toponym)
 VALUES ("Coaticook");
+INSERT INTO fn_locations (toponym)
+VALUES ("native-La Pomme d'Or");
+INSERT INTO fn_locations (toponym)
+VALUES ("native-Gaspesie");
 
 INSERT INTO nfn_locations (toponym)
 VALUES ("Shawbridge");
@@ -208,6 +231,12 @@ INSERT INTO nfn_locations (toponym)
 VALUES ("Weir");
 INSERT INTO nfn_locations (toponym)
 VALUES ("Lac Sylvère");
+INSERT INTO nfn_locations (toponym)
+VALUES ("Montagne d'Argent");
+INSERT INTO nfn_locations (toponym)
+VALUES ("Lac Superieur");
+INSERT INTO nfn_locations (toponym)
+VALUES ("Autobus de Bucephale");
 
 INSERT INTO posts_tags (post_id, tag_id) VALUES (1, 1);
 INSERT INTO posts_tags (post_id, tag_id) VALUES (1, 2);
@@ -219,21 +248,28 @@ INSERT INTO posts_tags (post_id, tag_id) VALUES (5, 3);
 INSERT INTO posts_tags (post_id, tag_id) VALUES (5, 1);
 INSERT INTO posts_tags (post_id, tag_id) VALUES (6, 1);
 INSERT INTO posts_tags (post_id, tag_id) VALUES (7, 2);
+INSERT INTO posts_tags (post_id, tag_id) VALUES (8, 5);
 INSERT INTO posts_tags (post_id, tag_id) VALUES (8, 3);
 INSERT INTO posts_tags (post_id, tag_id) VALUES (8, 2);
+INSERT INTO posts_tags (post_id, tag_id) VALUES (8, 4);
 --
 INSERT INTO posts_fn_locations (post_id, location_id) VALUES (1, 1);
-INSERT INTO posts_fn_locations (post_id, location_id) VALUES (1, 3);
+INSERT INTO posts_fn_locations (post_id, location_id) VALUES (1, 2);
 INSERT INTO posts_fn_locations (post_id, location_id) VALUES (3, 2);
+INSERT INTO posts_fn_locations (post_id, location_id) VALUES (3, 4);
 INSERT INTO posts_fn_locations (post_id, location_id) VALUES (4, 3);
 INSERT INTO posts_fn_locations (post_id, location_id) VALUES (5, 3);
-INSERT INTO posts_fn_locations (post_id, location_id) VALUES (7, 2);
+INSERT INTO posts_fn_locations (post_id, location_id) VALUES (7, 6);
 INSERT INTO posts_fn_locations (post_id, location_id) VALUES (8, 1);
+INSERT INTO posts_fn_locations (post_id, location_id) VALUES (8, 5);
 
 INSERT INTO posts_nfn_locations (post_id, location_id) VALUES (1, 2);
 INSERT INTO posts_nfn_locations (post_id, location_id) VALUES (2, 1);
+INSERT INTO posts_nfn_locations (post_id, location_id) VALUES (2, 4);
 INSERT INTO posts_nfn_locations (post_id, location_id) VALUES (4, 2);
 INSERT INTO posts_nfn_locations (post_id, location_id) VALUES (4, 3);
 INSERT INTO posts_nfn_locations (post_id, location_id) VALUES (6, 3);
-INSERT INTO posts_nfn_locations (post_id, location_id) VALUES (7, 2);
+INSERT INTO posts_nfn_locations (post_id, location_id) VALUES (7, 6);
 INSERT INTO posts_nfn_locations (post_id, location_id) VALUES (7, 1);
+INSERT INTO posts_nfn_locations (post_id, location_id) VALUES (8, 1);
+INSERT INTO posts_nfn_locations (post_id, location_id) VALUES (8, 5);

@@ -8,16 +8,16 @@ from ICR.db import get_db
 
 
 def get_complete_posts(ids: list) -> list:
-    """Get all relationships of post.
+    """Get all post and dependencies.
 
     Build a dict with all the data from the post itself and all its
     relationships.
 
     Args:
-        posts (list): a list of posts
+        ids (list): a list of post ids
 
     Returns:
-        dict
+        list
     """
     complete_posts = []
 
@@ -35,8 +35,8 @@ def get_complete_posts(ids: list) -> list:
             "SELECT path, thumb FROM pictures WHERE post_id = ?",
             (post_id,)
         ).fetchall()
-        container["picts"] = [pict["path"] for pict in picts]
-        container["thumb"] = [pict["thumb"] for pict in picts]
+        container["images"] = [pict["path"] for pict in picts]
+        container["thumbs"] = [pict["thumb"] for pict in picts]
 
         # add locations
         fn_locations = db.execute(
@@ -67,11 +67,11 @@ def get_complete_posts(ids: list) -> list:
         complete_posts.append(container)
 
     # TODO: pass in full picts (for carousel) and thumbnails (for blog)
-    pp(complete_posts)
+    # pp(complete_posts)
     return complete_posts
 
 
-def get_post(id, check_author=True):
+def get_post(id: int, check_author: bool = True):
     """Get a post based on its id.
 
     Args:
@@ -82,14 +82,12 @@ def get_post(id, check_author=True):
     Returns:
         sqlite3.Row  /  abort exception
     """
-    print("ñ")
     post = get_db().execute(
         "SELECT p.id, title, message, datetime, user_id, name"
         " FROM posts p JOIN users u ON p.user_id = u.id"
         " WHERE p.id = ?",
         (id,)
     ).fetchone()
-    print(post)
 
     if post is None:
         abort(404, f"Post id {id} doesn't exist.")
@@ -109,9 +107,6 @@ def insert(post_data: dict) -> None:
     Returns:
         None
     """
-    print("post_data")
-    pp(post_data)
-
     title = post_data["title"]
     body = post_data["body"]
     images = post_data["images"]
@@ -142,7 +137,6 @@ def insert(post_data: dict) -> None:
             )
             db.commit()
 
-    print(locations)
     # insert locations using the post id reference
     last_locations_ids = {"fn": [], "nfn": []}
     for loc in locations["fn"]:
@@ -180,7 +174,6 @@ def insert(post_data: dict) -> None:
             (loc,)
         ).fetchone()
         last_locations_ids["nfn"].append(lastrowid["id"])
-    print(f"{last_locations_ids=}")
 
     # insert the location - post relationship
     db = get_db()
@@ -205,7 +198,6 @@ def insert(post_data: dict) -> None:
         if tag.strip() == '':
             continue
         tag = tag.strip()
-        print(tag)
         db.execute(
             "INSERT OR IGNORE INTO tags (tag) "
             "VALUES (?)",

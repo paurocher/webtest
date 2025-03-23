@@ -17,6 +17,7 @@
     <link rel="shortcut icon" href="/static/images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
 
+    {% block extra_head %}{% endblock %}
 
     {% set title %}{% block title %}{% endblock %}{% endset %}
     <title>Ice Climbing Reports: {{ title }}</title>

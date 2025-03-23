@@ -23,6 +23,7 @@ def image_process(containers: "MultiDict") -> tuple:
                 valid_files.append(file)
 
     formatted_date: str = get_image_date()
+    formatted_datetime: str = get_image_datetime()
 
     # dir creation
     date_path: str = os.path.join(
@@ -46,15 +47,17 @@ def image_process(containers: "MultiDict") -> tuple:
     if valid_files:
         for i, file in enumerate(valid_files):
             ext: str = os.path.splitext(file.filename)[1].lower()[1:]
-            img_name, thmb_name = generate_img_thmb_name(i, ext)
+            img_name, thmb_name = generate_img_thmb_name(
+                formatted_datetime, i, ext
+            )
 
             image_path = os.path.join(image_save_path, img_name)
             file.save(image_path)
             thmb_path: str = os.path.join(thumbnail_save_path, thmb_name)
             make_thumbnail(file, thmb_path)
 
-            img_rel_path = os.path.sep.join(image_path.split(os.path.sep)[1:])
-            thmb_rel_path = os.path.sep.join(thmb_path.split(os.path.sep)[1:])
+            img_rel_path = os.path.sep.join(image_path.split(os.path.sep)[2:])
+            thmb_rel_path = os.path.sep.join(thmb_path.split(os.path.sep)[2:])
             post_images.append((img_rel_path, thmb_rel_path))
 
     return post_images
@@ -84,8 +87,15 @@ def get_image_date() -> str:
     """
     return datetime.datetime.today().strftime("%Y_%m")
 
+def get_image_datetime() -> str:
+    """Build a datetime string with for the image name.
 
-def generate_img_thmb_name(number: int, ext: str) -> tuple:
+    Returns:
+        str
+    """
+    return datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+
+def generate_img_thmb_name(date, number: int, ext: str) -> tuple:
     """Generate file name based on date, time and an index.
 
     Args:
@@ -96,7 +106,6 @@ def generate_img_thmb_name(number: int, ext: str) -> tuple:
     Returns:
         str
     """
-    date: str = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
     img_name: str = f"{date}_{number}.{ext}"
     thmb_name: str = f"{date}_{number}_tmb.png"
     return img_name, thmb_name

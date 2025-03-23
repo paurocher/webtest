@@ -11,6 +11,7 @@ from flask import (
 from flask.wrappers import Response
 import os
 from pprint import pprint as pp
+from sqlite3 import Connection, Cursor
 from user_agents import parse
 from werkzeug.user_agent import UserAgent
 from werkzeug.utils import secure_filename
@@ -18,32 +19,27 @@ from werkzeug.utils import secure_filename
 from ICR.__app import app
 from ICR.auth import login_required
 from ICR.db import get_db
-from ICR.helpers.sql_functions import insert, get_complete_posts, get_post
+from ICR.helpers.sql_functions import insert, get_complete_posts
 from ICR.helpers.image_process import image_process
+from ICR.helpers.post_edit import (
+    delete_post,
+    update_post
+)
 
 bp = Blueprint("blog", __name__)
 
 @bp.route("/")
-def index():
-    db = get_db()
+def index() -> str:
+    db: Connection = get_db()
 
-    # get all entries in the posts table
-    # posts = db.execute(
-    #     "SELECT p.id pid, p.title, p.message, p.datetime, u.id uid, u.name "
-    #     "FROM posts p "
-    #     "JOIN users u ON p.user_id = u.id "
-    #     "ORDER BY datetime DESC"
-    # ).fetchall()
-    post_ids = db.execute(
+    post_ids: list = db.execute(
         "SELECT id FROM posts ORDER BY datetime DESC"
     ).fetchall()
 
-    post_ids = [post_id["id"] for post_id in post_ids]
-    print(post_ids)
+    post_ids: list = [post_id["id"] for post_id in post_ids]
 
-    # get all related data from ech post
-    complete_posts = get_complete_posts(post_ids)
-    print("f")
+    # get all related data from each post
+    complete_posts: list = get_complete_posts(post_ids)
     return render_template("blog/index.html", posts=complete_posts)
 
 
@@ -96,6 +92,7 @@ def create() -> str or Response:
 
         # get tags
         tags: list = request.form["tags"].split(",")
+        tags: list = [tag for tag in tags if tag]
 
         post_data: dict = {
             "title": title,
@@ -111,63 +108,49 @@ def create() -> str or Response:
     return render_template("blog/create.html", mobile=mobile)
 
 
-
-@bp.route("/<int:post_id>/edit", methods=("GET", "POST"))
+@bp.route("/edit/<int:post_id>", methods=("GET", "POST"))
 @login_required
 def edit(post_id):
-    db = get_db()
-    # post = get_post(post_id)
+    post = get_complete_posts([post_id])[0]
+    # quckly generating a list of tuples to pair thumbs and pictures so I can
+    # pass them to the switches and easily find both paths to delete
+    post["images"] = [
+        (img, thmb) for img, thmb in zip(post["images"], post["thumbs"])
+    ]
 
-    if request.method == "POST":
-        title = request.form["title"]
-        body = request.form["message"]
-        error = None
+    if request.method == "GET":
+        # get the post and dependencies
+        return render_template("blog/edit.html", post=post)
 
-        if not title:
-            error = "Title is required."
+    # POST
+    pp(request.form)
+    # delete post
+    if request.form.get("action") == "Delete":
+        delete_post(post)
+        return redirect(url_for("blog.index"))
 
-        if error is not None:
-            flash(error)
-        else:
-            db = get_db()
-            db.execute(
-                "UPDATE posts SET title = ?, message = ? "
-                "WHERE id = ?",
-                (title, body, post_id)
-            )
-            db.commit()
-            return redirect(url_for("blog.index"))
+    # update post
+    update = update_post(post, request)
+    if not update:
+        # something went wrong, return to post edit
+        return render_template("blog/edit.html", post=post)
 
-    # get all entries in the posts table
-    post_id = db.execute(
-        "SELECT id FROM posts ORDER BY datetime DESC"
-    ).fetchone()
-
-    print("POST")
-    print(f"{post_id=}")
-
-    post = get_complete_posts(post_id)[0]
-    return render_template("blog/edit.html", post=post)
-
-# TODO: add image upload
-# TODO: add tag add
-# TODO: add tag remove
-# TODO: location tag add
-# TODO: location tag remove
-
-
-@bp.route("/<int:post_id>/delete", methods=("POST",))
-@login_required
-def delete(post_id):
-    # TODO: add image deletion
-    get_post(post_id)
-    db = get_db()
-    db.execute("DELETE FROM posts WHERE id = ?", (post_id,))
-    db.commit()
+    # all good, go to index with updated post
     return redirect(url_for("blog.index"))
 
 
-
-
-
-
+@bp.route("/carousel/<int:post_id>")
+def carousel(post_id):
+    post = get_complete_posts([post_id])[0]
+    print("post")
+    pp(post)
+    images = {}
+    active = "active"
+    for i, image in enumerate(post["images"]):
+        if i > 0:
+            active = ""
+        images[i] = [f"/static/{image}", active]
+    return (
+        render_template("blog/full_screen_carousel.html",
+        images=images)
+    )

@@ -41,12 +41,12 @@ https://ttl255.com/jinja2-tutorial-part-1-introduction-and-variable-substitution
 - Centralize communication channels between ice climbers. 
   So far we use a lot FaceBook and Messenger but finding past messages gets often difficult.
 - Reduce hazard.
-  Communication is a key part of safety. Quickly sharing current  conditions can make for more informed decision-making.
+  Communication is a key part in safety. Quickly sharing current conditions can make for more informed decision-making.
 - Bring back the use of the first-nation toponomy.
   Increase importance, care and culture levels by making people more aware of their surroundings history and cultural heritage.
 - Consolidate CS50 knowledge.
   One of my favorite things I have learned during this course has been the database creation and management (even though I apparently failed at the Fiftyville project :D ).
-  Also, Flask has sparked a lot of interest on me!
+  Also, Flask and Jinja have sparked a lot of interest in me!
 
 ## The project
 The "Ice Climbing Reports" project is a web application that allows users to communicate with each other about their ice climbing experiences. These experiences can be either weather reports, state of the ice in a particular climbing site, personal stories about a particular ice climbing experience, tips and tricks, car-pooling, etc ...
@@ -66,8 +66,9 @@ Hence, I wanted to practice and learn more about them.
 Flask and Jinja have opened a whole new world of possibilities for me. I have never been a big fan of html and css. But now, thanks to CS50's teachings about flask and jinja, I am feeling more open to it. 
 
 
-##Technical details
-I have started this project with a diagram in which I have been noting down all ideas I wanted to implement, database organization and web-site design. This is a step I like doing before I start coding. Eventually I leave it on the side because the coding and the program has enough presence to make me comfortable enough to concentrate more on the technical aspects. Eventually the diagram ad the final product might not have much in common but at least it helped me to kickstart the project.
+## Technical details
+
+I have started this project with a diagram in which I have been noting down all ideas I wanted to implement, database organization and web-site design. This is a step I like doing before I start coding. Eventually I leave it on the side because the coding and the program has enough presence to make me comfortable enough to concentrate more on the technical aspects. Eventually the diagram ad the final product might not have much in common but at least it helped me kickstart the project.
 
 Here, I am going to describe the things I have been implementing in the project. I will present the information either file by file or folder by folder.
 
@@ -158,7 +159,7 @@ Write a general ru about the templates and blueprnts. Enter into more detail int
 ####helpers.py
 
 ####schema.sql
-details about this script and how I structured the database. Maybe include the drawin!!!
+details about this script and how I structured the database. Maybe include the drawing!!!
 
 Git
 I do not feel very at ease with git still. I have mostly worked off-line, mainly on a branch and not pushing to it very often. Many tests have been deleted when the right recipe was found.

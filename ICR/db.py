@@ -1,6 +1,5 @@
 import sqlite3
 from datetime import datetime
-import os
 
 import click
 from flask import current_app, g
@@ -10,16 +9,21 @@ sqlite3.register_converter(
 )
 
 def init_app(app):
-    app.teardown_appcontext(close_db)
-    app.cli.add_command(init_db_command)
+    """
 
-# def init_db():
-#     print("pam")
-#     db = get_db()
-#
-#     with current_app.open_resource('schema.sql') as f:
-#         db.executescript(f.read().decode('utf8'))
-#         print("pum!")
+    https://flask.palletsprojects.com/en/stable/tutorial/database/#register-with-the-application
+
+    Args:
+        app:
+
+    Returns:
+
+    """
+    # tells Flask to call that function when cleaning up after returning the
+    # response.
+    app.teardown_appcontext(close_db)
+    # adds a new command that can be called with the flask command
+    app.cli.add_command(init_db_command)
 
 
 @click.command('init-db')
@@ -27,7 +31,6 @@ def init_db_command():
     db = get_db()
     with current_app.open_resource("schema.sql") as f:
         script = f.read().decode('unicode_escape')
-    # print("fffffffffff", script)
     db.cursor().executescript(script)
     db.commit()
     db.close()

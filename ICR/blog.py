@@ -16,7 +16,7 @@ from user_agents import parse
 from werkzeug.user_agent import UserAgent
 from werkzeug.utils import secure_filename
 
-from ICR.__app import app
+# from ICR.__app import app
 from ICR.auth import login_required
 from ICR.db import get_db
 from ICR.helpers.sql_functions import insert, get_complete_posts
@@ -25,6 +25,7 @@ from ICR.helpers.post_edit import (
     delete_post,
     update_post
 )
+from ICR.helpers.misc import is_mobile
 
 bp = Blueprint("blog", __name__)
 
@@ -47,16 +48,18 @@ def index() -> str:
 @login_required
 def create() -> str or Response:
     # get device
-    user_agent: str = request.headers.get("User-Agent")
-    user_agent_parsed: UserAgent = parse(user_agent)
-    device_type: str = (
-        "Mobile" if user_agent_parsed.is_mobile else
-        "Tablet" if user_agent_parsed.is_tablet else
-        "Desktop"
-    )
-    mobile: bool = True
-    if device_type == "Desktop":
-        mobile = False
+    # user_agent: str = request.headers.get("User-Agent")
+    # user_agent_parsed: UserAgent = parse(user_agent)
+    # device_type: str = (
+    #     "Mobile" if user_agent_parsed.is_mobile else
+    #     "Tablet" if user_agent_parsed.is_tablet else
+    #     "Desktop"
+    # )
+    # mobile: bool = True
+    # if device_type == "Desktop":
+    #     mobile = False
+    mobile = is_mobile()
+
 
     if request.method == "POST":
         title: str = request.form["title"]

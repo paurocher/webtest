@@ -4,7 +4,7 @@ import os.path
 from pprint import pprint as pp
 from pathlib import Path
 
-from ICR.__app import app
+# from ICR.__app import app
 from ICR.db import get_db
 from .image_process import image_process
 
@@ -51,7 +51,7 @@ def delete_images(post: dict) -> None:
     )
     db.commit()
 
-    path_root = app.config["IMAGE_ROOT_FOLDER"]
+    path_root = os.environ.get("IMAGE_ROOT_FOLDER")
     for image in images:
         img_path = os.path.sep.join(image.split(os.path.sep)[1:])
         img_path = os.path.join(path_root, img_path)
@@ -246,8 +246,8 @@ def update_images(post: dict, request: Request) -> None:
         paths = eval(paths)
         # delete paths
         for path in paths:
-            # I feel this path creation is a bit hard coded maybe? :(
-            path = os.path.join(app.root_path, "ICR", "static", path)
+            root_path = __file__.split(os.path.sep)[:-4]
+            path = os.path.join(*root_path, "ICR", "static", path)
             path = Path(path)
             path.unlink()
 

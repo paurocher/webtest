@@ -6,7 +6,7 @@ from io import TextIOWrapper
 
 from PIL import Image, ImageOps
 
-from ICR.__app import app
+# from ICR.__app import app
 # TODO: check if I really need to import the app or if there is a better way
 from ICR.helpers.misc import validate_file_type
 
@@ -18,7 +18,7 @@ def image_process(containers: "MultiDict") -> tuple:
         for file in container:
             if validate_file_type(
                 file.filename,
-                app.config["IMAGE_EXTENSIONS"]
+                os.environ.get("IMAGE_EXTENSIONS")
             ):
                 valid_files.append(file)
 
@@ -27,15 +27,15 @@ def image_process(containers: "MultiDict") -> tuple:
 
     # dir creation
     date_path: str = os.path.join(
-        app.config["IMAGE_ROOT_FOLDER"],
+        os.environ.get("IMAGE_ROOT_FOLDER"),
         formatted_date
     )
-    image_save_path: str = app.config["IMAGE_UPLOAD_FOLDER"].format(
+    image_save_path: str = os.environ.get("IMAGE_UPLOAD_FOLDER").format(
         yyyy_mm=formatted_date
     )
-    thumbnail_save_path: str = app.config[
+    thumbnail_save_path: str = os.environ.get(
         "IMAGE_THUMBNAIL_UPLOAD_FOLDER"
-    ].format(
+    ).format(
         yyyy_mm=formatted_date
     )
     if not os.path.exists(date_path):

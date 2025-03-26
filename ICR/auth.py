@@ -109,3 +109,46 @@ def login_required(view):
         return view(**kwargs)
 
     return wrapped_view
+
+@bp.route('/psswd_change', methods=('GET', 'POST'))
+def psswd_change():
+    print(f"{g.user.keys()=}")
+    print(f"{g.user['id']=}")
+    print(f"{g.user['name']=}")
+    print(f"{g.user['hash']=}")
+    if request.method == "POST":
+        if request.form.get("action") == "Submit":
+            old_password = request.form["old_password"]
+            new_password = request.form["new_password"]
+            confirmation = request.form["confirmation"]
+
+            error = False
+            if not all([old_password, new_password, confirmation]):
+                flash("All fields must be filled in.")
+                error = True
+            elif not check_password_hash(g.user["hash"], old_password):
+                flash("Incorrect password.")
+                error = True
+            elif new_password != confirmation:
+                error = True
+                flash("Password and confirmation must match.")
+            if error:
+                return render_template("auth/psswd_change.html")
+
+            db = get_db()
+            db.execute(
+                "UPDATE users SET hash = ? WHERE id = ?",
+                (generate_password_hash(new_password), g.user["id"]),
+            )
+            db.commit()
+            flash("Password changed.")
+            return redirect(url_for('index'))
+
+        else:
+            return redirect(url_for('index'))
+
+
+    elif request.method == "GET":
+        return render_template("auth/psswd_change.html")
+
+    return render_template("auth/psswd_change.html")

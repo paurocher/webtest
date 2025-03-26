@@ -126,7 +126,7 @@ def edit(post_id):
         return render_template("blog/edit.html", post=post)
 
     # POST
-    pp(request.form)
+    # pp(request.form)
     # delete post
     if request.form.get("action") == "Delete":
         delete_post(post)

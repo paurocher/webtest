@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Pictures
+{% endblock %}
+
+{% block main %}
+
+<div class="carousel_container">
+<div id="carouselExampleIndicators" class="carousel slide">
+  <div class="carousel-indicators">
+    {% for i, image in images.items() %}
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ i }}" class="{{ image[1] }}" aria-label="Slide {{ i }}"></button>
+    {% endfor %}
+  </div>
+  <div class="carousel-inner">
+    {% for i, image in images.items() %}
+      <div class="carousel-item {{ image[1] }}">
+        <img src="{{ image[0] }}" class="d-block w-100" alt="...">
+      </div>
+    {% endfor %}
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+</div>
+
+{% endblock %}

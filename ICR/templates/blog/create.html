@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}New Post{% endblock %}
+
+{% block main %}
+g.is_mobile:
+<strong>{% if mobile %}True{% else %}False{% endif %}</strong>
+
+  <form method="post" enctype="multipart/form-data">
+    <div class="row mb-3">
+        <input name="title" id="title" value="{{ request.form['title'] }}" required placeholder="Title">
+    </div>
+
+    <div class="row mb-3">
+        <textarea name="message" id="message" placeholder="Message">{{ request.form['body'] }}</textarea>
+    </div>
+
+    <div class="row mb-3" style="border:1px solid gray; padding:5px">
+      <div class="row mb">Pictures</div>
+        <div class="mb-3">
+          <input class="form-control" type="file" multiple name="files">
+          {% if mobile %}
+<!--            <label class="col-sm-1"> </label>-->
+            <input type="file" accept="image/*" capture="camera" name="cam_files" id="cam_files">
+            <label for="cam_files">Camera</label>
+<!--            <button type="button" class="btn btn-info">Camera</button>-->
+          {% endif %}
+        </div>
+      </div>
+<!--    </div>-->
+
+    <div class="row mb-3">
+        <input name="fn_location" id="fn_location"
+          placeholder="First Nation Location Names (list of comma separated locations)"
+          title="List of comma separated locations: location_01,location_02,location_03">
+        <input name="nfn_location" id="nfn_location"
+          placeholder="Non-First Nation Location Names (list of comma separated locations)"
+          title="List of comma separated locations: location_01,location_02,location_03">
+    </div>
+
+    <div class="row mb-3">
+        <input name="tags" id="tags"
+            placeholder="Tags (list of comma separated tags)"
+            title="List of comma separated tags: tag_01,tag_02,tag_03">
+    </div>
+
+      <input type="submit" class="btn btn-primary" value="Submit">
+
+  </form>
+{% endblock %}

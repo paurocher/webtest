@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit "{{ post['title'] }}"{% endblock %}
+
+{% block main %}
+  <form method="post">
+    <label for="title">Title</label>
+    <input name="title" id="title"
+      value="{{ request.form['title'] or post['title'] }}" required>
+    <label for="Message">Message</label>
+    <textarea name="message" id="message">{{ request.form['message'] or post['message'] }}</textarea>
+    <input type="submit" value="Save">
+  </form>
+  <hr>
+  <form action="{{ url_for('blog.delete', id=post['id']) }}" method="post">
+    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+  </form>
+{% endblock %}
+
+
+<!--
+TODO:
+  - display the pictures and ability to delete them or upload new pictures.
+  - add, remove tags
+-->

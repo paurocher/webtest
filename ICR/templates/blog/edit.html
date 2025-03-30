@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<style>
+  div.frame {
+    border: 1px solid gray;
+    padding: 20px;
+    border-radius: 10px;
+  }
+</style>
+{% endblock %}
+
+{% block title %}Edit Post "{{ post['title'] }}"{% endblock %}
+{% block main %}
+
+g.is_mobile:
+<strong>{% if mobile %}True{% else %}False{% endif %}</strong>
+
+<form method="post" enctype="multipart/form-data">
+
+  <div class="row sm-3 frame">
+    <div class="input-group">
+      <span class="input-group-text">Title</span>
+      <input type="text" name="title" id="title" value="{{ post['title'] }}" class="form-control" >
+    </div>
+    <div class="input-group">
+      <span class="input-group-text">Message</span>
+      <textarea class="form-control" name="message" id="message">{{ post['message'] }}</textarea>
+    </div>
+  </div>
+
+  <div class="row sm-3 frame">
+      Delete pictures:
+      <div><br></div>
+        {% for img in post['images'] %}
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="{{url_for('static', filename=img[1])}}" alt="Card image cap">
+          <div class="card-body">
+            <div class="form-check form-switch float-start">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault{{loop.index}}" value="{{img[0],img[1]}}" name="checkbox{{loop.index}}">
+              <label class="form-check-label" for="flexSwitchCheckDefault{{loop.index}}">Delete</label>
+          </div>
+          </div>
+        </div>
+        {% endfor %}
+  </div>
+     <div class="row sm-3 frame">
+      Add pictures:
+      <div class="mb-3">
+        <input class="form-control" type="file" multiple name="files">
+        {% if mobile %}
+          <input type="file" accept="image/*" capture="camera" name="cam_files" id="cam_files">
+          <label for="cam_files">Camera</label>
+        {% endif %}
+      </div>
+    </div>
+
+ <div class="row sm-3 frame">
+  <div class="input-group">
+    <span class="input-group-text">First Nation Location Names</span>
+    <input type="text" name=fn_locations id=fn_locations value="{{ post['locations']['fn']|join(",") }}" class="form-control">
+  </div>
+  <div class="input-group">
+    <span class="input-group-text">Non-First Nation Location Names</span>
+    <input type="text" name=nfn_locations id=nfn_locations value="{{ post['locations']['nfn']|join(",") }}" class="form-control">
+  </div>
+ </div>
+
+  <div class="row sm-3 frame">
+    <div class="input-group">
+    <span class="input-group-text">Tags</span>
+    <input type="text" name=tags id=tags value={{ post['tags']|join(",") }} class="form-control">
+    </div>
+  </div>
+
+<!--  Hidden field to pass extra info -->
+  <div>
+    <input type="hidden" id="post_id" name="post_id" value={{ post['id'] }}>
+  </div>
+
+  <div>
+    <br>
+    <input type="submit" name="action" class="btn btn-primary" value="Submit">
+    <input type="submit" name="action" class="btn btn-primary" style="background-color: rgb(200,200,0);border:1px solid rgb(200,200,0)" value="Cancel">
+    <input type="submit" name="action" class="btn btn-danger" value="Delete">
+  </div>
+
+</form>
+{% endblock %}

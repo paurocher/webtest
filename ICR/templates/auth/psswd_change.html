@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Change Password
+{% endblock %}
+
+{% if username %}
+    {{ username }}
+{% endif %}
+
+{% block main %}
+    <p>{{ message }}</p>
+
+    <form method="post">
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="old_password" placeholder="Old password" type="text">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="new_password" placeholder="New Password" type="text">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="confirmation" placeholder="New Password (again)" type="text">
+        </div>
+        <button class="btn btn-primary" name="action" type="submit" value="Cancel">Cancel</button>
+        <button class="btn btn-primary" name="action" type="submit" value="Submit">Change</button>
+    </form>
+{% endblock %}

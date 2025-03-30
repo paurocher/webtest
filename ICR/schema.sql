@@ -140,47 +140,47 @@ INSERT INTO posts (user_id, title, message, datetime)
 VALUES (3,
 'Sharpening your ice axe and crampons',
 'Sharpen your ice axe by holding it at a 20 degree angle and running it along a whetstone. Switch sides and repeat. Sharpen crampons by holding them vertically and running them along a whetstone at a 20 degree angle. Do not sharpen crampons too much, as it can weaken them.',
-'2024-04-20 12:11:53'
+'2025-03-05 06:29:38'
 );
 
-INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (1, 1, 'images/2024_12/pictures/2020_03_01_08_47_12.jpg',
-'images/2024_12/thumbnails/2020_03_01_08_47_12_tmb.jpg');
-INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (1, 2, 'images/2024_12/pictures/2020_03_01_10_24_16.jpg',
-'images/2024_12/thumbnails/2020_03_01_10_24_16_tmb.jpg');
-INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (1, 3, 'images/2024_12/pictures/2020_03_01_11_48_17.jpg',
-'images/2024_12/thumbnails/2020_03_01_11_48_17_tmb.jpg');
-INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (1, 4, 'images/2024_12/pictures/2020_03_01_11_48_26.jpg',
-'images/2024_12/thumbnails/2020_03_01_11_48_26_tmb.jpg');
+--INSERT INTO pictures (post_id, picture_order, path, thumb)
+--VALUES (1, 1, 'images/2024_12/pictures/2020_03_01_08_47_12.jpg',
+--'images/2024_12/thumbnails/2020_03_01_08_47_12_tmb.jpg');
+--INSERT INTO pictures (post_id, picture_order, path, thumb)
+--VALUES (1, 2, 'images/2024_12/pictures/2020_03_01_10_24_16.jpg',
+--'images/2024_12/thumbnails/2020_03_01_10_24_16_tmb.jpg');
+--INSERT INTO pictures (post_id, picture_order, path, thumb)
+--VALUES (1, 3, 'images/2024_12/pictures/2020_03_01_11_48_17.jpg',
+--'images/2024_12/thumbnails/2020_03_01_11_48_17_tmb.jpg');
+--INSERT INTO pictures (post_id, picture_order, path, thumb)
+--VALUES (1, 4, 'images/2024_12/pictures/2020_03_01_11_48_26.jpg',
+--'images/2024_12/thumbnails/2020_03_01_11_48_26_tmb.jpg');
 
-INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (2, 1, 'images/2024_12/pictures/2020_03_01_13_39_21.jpg',
-'images/2024_12/thumbnails/2020_03_01_13_39_21_tmb.jpg');
-INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (2, 2, 'images/2024_12/pictures/2020_03_01_13_39_29.jpg',
-'images/2024_12/thumbnails/2020_03_01_13_39_29_tmb.jpg');
-INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (2, 3, 'images/2024_12/pictures/2021_01_30_09_50_38.jpg',
-'images/2024_12/thumbnails/2021_01_30_09_50_38_tmb.jpg');
-INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (2, 4, 'images/2024_12/pictures/2021_01_30_14_08_19.jpg',
-'images/2024_12/thumbnails/2021_01_30_14_08_19_tmb.jpg');
+--INSERT INTO pictures (post_id, picture_order, path, thumb)
+--VALUES (2, 1, 'images/2024_12/pictures/2020_03_01_13_39_21.jpg',
+--'images/2024_12/thumbnails/2020_03_01_13_39_21_tmb.jpg');
+--INSERT INTO pictures (post_id, picture_order, path, thumb)
+--VALUES (2, 2, 'images/2024_12/pictures/2020_03_01_13_39_29.jpg',
+--'images/2024_12/thumbnails/2020_03_01_13_39_29_tmb.jpg');
+--INSERT INTO pictures (post_id, picture_order, path, thumb)
+--VALUES (2, 3, 'images/2024_12/pictures/2021_01_30_09_50_38.jpg',
+--'images/2024_12/thumbnails/2021_01_30_09_50_38_tmb.jpg');
+--INSERT INTO pictures (post_id, picture_order, path, thumb)
+--VALUES (2, 4, 'images/2024_12/pictures/2021_01_30_14_08_19.jpg',
+--'images/2024_12/thumbnails/2021_01_30_14_08_19_tmb.jpg');
 
-INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (3, 1, 'images/2024_12/pictures/2021_01_30_14_09_19.jpg',
-'images/2024_12/thumbnails/2021_01_30_14_09_19_tmb.jpg');
-INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (3, 2, 'images/2024_12/pictures/2021_01_30_14_09_22.jpg',
-'images/2024_12/thumbnails/2021_01_30_14_09_22_tmb.jpg');
-INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (3, 3, 'images/2024_12/pictures/2021_01_30_14_10_12.jpg',
-'images/2024_12/thumbnails/2021_01_30_14_10_12_tmb.jpg');
-INSERT INTO pictures (post_id, picture_order, path, thumb)
-VALUES (3, 4, 'images/2024_12/pictures/2021_01_30_14_10_17.jpg',
-'images/2024_12/thumbnails/2021_01_30_14_10_17_tmb.jpg');
+--INSERT INTO pictures (post_id, picture_order, path, thumb)
+--VALUES (3, 1, 'images/2024_12/pictures/2021_01_30_14_09_19.jpg',
+--'images/2024_12/thumbnails/2021_01_30_14_09_19_tmb.jpg');
+--INSERT INTO pictures (post_id, picture_order, path, thumb)
+--VALUES (3, 2, 'images/2024_12/pictures/2021_01_30_14_09_22.jpg',
+--'images/2024_12/thumbnails/2021_01_30_14_09_22_tmb.jpg');
+--INSERT INTO pictures (post_id, picture_order, path, thumb)
+--VALUES (3, 3, 'images/2024_12/pictures/2021_01_30_14_10_12.jpg',
+--'images/2024_12/thumbnails/2021_01_30_14_10_12_tmb.jpg');
+--INSERT INTO pictures (post_id, picture_order, path, thumb)
+--VALUES (3, 4, 'images/2024_12/pictures/2021_01_30_14_10_17.jpg',
+--'images/2024_12/thumbnails/2021_01_30_14_10_17_tmb.jpg');
 
 INSERT INTO pictures (post_id, picture_order, path, thumb)
 VALUES (8, 1, 'images/2025_03/pictures/2025_03_05_06_29_38_0.jpg',

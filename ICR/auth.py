@@ -112,10 +112,6 @@ def login_required(view):
 
 @bp.route('/psswd_change', methods=('GET', 'POST'))
 def psswd_change():
-    print(f"{g.user.keys()=}")
-    print(f"{g.user['id']=}")
-    print(f"{g.user['name']=}")
-    print(f"{g.user['hash']=}")
     if request.method == "POST":
         if request.form.get("action") == "Submit":
             old_password = request.form["old_password"]

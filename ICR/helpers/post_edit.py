@@ -246,8 +246,8 @@ def update_images(post: dict, request: Request) -> None:
         paths = eval(paths)
         # delete paths
         for path in paths:
-            root_path = __file__.split(os.path.sep)[:-4]
-            path = os.path.join(*root_path, "ICR", "static", path)
+            root_path = __file__.split(os.path.sep)[:-3]
+            path = os.path.join("/", *root_path, "ICR", "static", path)
             path = Path(path)
             path.unlink()
 

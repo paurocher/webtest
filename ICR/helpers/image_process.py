@@ -1,6 +1,7 @@
 """Module for all things image processing."""
 
 import datetime
+from flask import current_app
 import os
 from io import TextIOWrapper
 
@@ -18,7 +19,7 @@ def image_process(containers: "MultiDict") -> tuple:
         for file in container:
             if validate_file_type(
                 file.filename,
-                os.environ.get("IMAGE_EXTENSIONS")
+                current_app.config["IMAGE_EXTENSIONS"]
             ):
                 valid_files.append(file)
 
@@ -27,15 +28,14 @@ def image_process(containers: "MultiDict") -> tuple:
 
     # dir creation
     date_path: str = os.path.join(
-        os.environ.get("IMAGE_ROOT_FOLDER"),
+        current_app.config["IMAGE_ROOT_FOLDER"],
         formatted_date
     )
-    image_save_path: str = os.environ.get("IMAGE_UPLOAD_FOLDER").format(
+    image_save_path: str = current_app.config["IMAGE_UPLOAD_FOLDER"].format(
         yyyy_mm=formatted_date
     )
-    thumbnail_save_path: str = os.environ.get(
-        "IMAGE_THUMBNAIL_UPLOAD_FOLDER"
-    ).format(
+    thumbnail_save_path: str = current_app.config[
+        "IMAGE_THUMBNAIL_UPLOAD_FOLDER"].format(
         yyyy_mm=formatted_date
     )
     if not os.path.exists(date_path):
@@ -71,7 +71,7 @@ def make_thumbnail(file: TextIOWrapper, dest_path: str) -> None:
     Returns:
         io.BytesIO
     """
-    size: tuple = app.config["IMAGE_THUMBNAIL_DIMENSIONS"]
+    size: tuple = current_app.config["IMAGE_THUMBNAIL_DIMENSIONS"]
 
     with Image.open(file) as image:
         image: Image = ImageOps.fit(image, size)

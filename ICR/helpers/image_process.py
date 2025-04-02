@@ -15,6 +15,7 @@ from ICR.helpers.misc import validate_file_type
 # TODO: image deletion
 
 def image_process(containers: "MultiDict") -> tuple:
+    # get images if extension is valid
     valid_files: list = []
     for container in containers:
         for file in container:
@@ -24,10 +25,11 @@ def image_process(containers: "MultiDict") -> tuple:
             ):
                 valid_files.append(file)
 
+    # build date strings for image and folder names
     formatted_date: str = get_image_date()
     formatted_datetime: str = get_image_datetime()
 
-    # dir creation
+    # dir names creation
     date_path: Union[LiteralString, str, bytes] = os.path.join(
         current_app.config["ROOT_PATH"],
         current_app.config["IMAGE_ROOT_FOLDER"],
@@ -45,6 +47,7 @@ def image_process(containers: "MultiDict") -> tuple:
             yyyy_mm=formatted_date
         )
     )
+    # make the dirs
     if not os.path.exists(date_path):
         os.mkdir(date_path)
     if not os.path.exists(image_save_path):

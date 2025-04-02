@@ -28,6 +28,7 @@ def image_process(containers: "MultiDict") -> tuple:
 
     # dir creation
     date_path: str = os.path.join(
+        current_app.config["ROOT_PATH"],
         current_app.config["IMAGE_ROOT_FOLDER"],
         formatted_date
     )

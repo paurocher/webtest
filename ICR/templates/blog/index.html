@@ -43,6 +43,7 @@
           <a href="{{ url_for('blog.carousel', post_id=post['id']) }}" target="_self">
             <img src="{{url_for('static', filename=thumb)}}" class="card-img-top img-fluid" loading="lazy" alt="...">
           </a>
+          {{url_for('static', filename=thumb)}}
         </div>
       {% endfor %}
 <!--      make thumbnails clickable and they open up a carousel of all the images-->

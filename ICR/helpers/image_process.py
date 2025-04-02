@@ -68,8 +68,8 @@ def image_process(containers: "MultiDict") -> tuple:
             thmb_path: str = os.path.join(thumbnail_save_path, thmb_name)
             make_thumbnail(file, thmb_path)
 
-            img_rel_path = os.path.sep.join(image_path.split(os.path.sep)[2:])
-            thmb_rel_path = os.path.sep.join(thmb_path.split(os.path.sep)[2:])
+            img_rel_path = image_path.split("ICR/static")[1]
+            thmb_rel_path = thmb_path.split("ICR/static")[1]
             post_images.append((img_rel_path, thmb_rel_path))
     print("post_images", post_images)
     return post_images

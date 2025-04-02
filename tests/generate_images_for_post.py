@@ -32,14 +32,12 @@ def restore_images():
     for image in images:
         shutil.copy(
             image,
-            f"{path_root}/ICR/static/images/2025_03/"
-            "pictures"
+            f"{path_root}/ICR/static/images/2025_03/pictures"
         )
     for thumb in thumbs:
         shutil.copy(
             thumb,
-            f"{path_root}/ICR/static/images/2025_03"
-            "/thumbnails"
+            f"{path_root}/ICR/static/images/2025_03/thumbnails"
         )
 
 if __name__ == "__main__":

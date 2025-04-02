@@ -2,8 +2,9 @@
 
 import datetime
 from flask import current_app
-import os
 from io import TextIOWrapper
+import os
+from typing_extensions import LiteralString, Union
 
 from PIL import Image, ImageOps
 
@@ -27,26 +28,28 @@ def image_process(containers: "MultiDict") -> tuple:
     formatted_datetime: str = get_image_datetime()
 
     # dir creation
-    date_path: str = os.path.join(
+    date_path: Union[LiteralString, str, bytes] = os.path.join(
         current_app.config["ROOT_PATH"],
         current_app.config["IMAGE_ROOT_FOLDER"],
         formatted_date
     )
-    image_save_path: str = os.path.join(
+    image_save_path: Union[LiteralString, str, bytes] = os.path.join(
         current_app.config["ROOT_PATH"],
         current_app.config["IMAGE_UPLOAD_FOLDER"].format(
-        yyyy_mm=formatted_date
+            yyyy_mm=formatted_date
         )
     )
-    thumbnail_save_path: str = os.path.join(
+    thumbnail_save_path: Union[LiteralString, str, bytes] = os.path.join(
         current_app.config["ROOT_PATH"],
         current_app.config[ "IMAGE_THUMBNAIL_UPLOAD_FOLDER"].format(
-        yyyy_mm=formatted_date
+            yyyy_mm=formatted_date
         )
     )
     if not os.path.exists(date_path):
         os.mkdir(date_path)
+    if not os.path.exists(image_save_path):
         os.mkdir(image_save_path)
+    if not os.path.exists(thumbnail_save_path):
         os.mkdir(thumbnail_save_path)
 
     post_images: list = []
@@ -65,7 +68,7 @@ def image_process(containers: "MultiDict") -> tuple:
             img_rel_path = os.path.sep.join(image_path.split(os.path.sep)[2:])
             thmb_rel_path = os.path.sep.join(thmb_path.split(os.path.sep)[2:])
             post_images.append((img_rel_path, thmb_rel_path))
-
+    print("post_images", post_images)
     return post_images
 
 def make_thumbnail(file: TextIOWrapper, dest_path: str) -> None:

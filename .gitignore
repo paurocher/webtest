@@ -164,6 +164,6 @@ cython_debug/
 
 
 personal/
-ICR/static/images/
-ICR/static/thumbnails/
+ICR/static/images/*
+ICR/static/thumbnails/*
 ice_climbing.db

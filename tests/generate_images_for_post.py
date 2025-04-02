@@ -15,28 +15,18 @@ def restore_images():
         path_root = "/home/fuku/PycharmProjects/webtest"
     # passing images outside the project to simulate an image upload
     images = [
-f"{path_root}/tests/mockup_images/2025_03_05_06_29_38_0"
-".jpg",
-f"{path_root}/tests/mockup_images/2025_03_05_06_29_38_1"
-".jpg",
-f"{path_root}/tests/mockup_images/2025_03_05_06_29_38_2"
-".jpg",
-f"{path_root}/tests/mockup_images/2025_03_05_06_29_38_3"
-".jpg",
-f"{path_root}/tests/mockup_images/2025_03_05_06_29_38_4"
-".jpg",
+        f"{path_root}/tests/mockup_images/2025_03_05_06_29_38_0.jpg",
+        f"{path_root}/tests/mockup_images/2025_03_05_06_29_38_1.jpg",
+        f"{path_root}/tests/mockup_images/2025_03_05_06_29_38_2.jpg",
+        f"{path_root}/tests/mockup_images/2025_03_05_06_29_38_3.jpg",
+        f"{path_root}/tests/mockup_images/2025_03_05_06_29_38_4.jpg",
     ]
     thumbs = [
-f"{path_root}/tests/mockup_images"
-"/2025_03_05_06_29_38_4_tmb.png",
-f"{path_root}/tests/mockup_images"
-"/2025_03_05_06_29_38_3_tmb.png",
-f"{path_root}/tests/mockup_images"
-"/2025_03_05_06_29_38_2_tmb.png",
-f"{path_root}/tests/mockup_images"
-"/2025_03_05_06_29_38_1_tmb.png",
-f"{path_root}/tests/mockup_images"
-"/2025_03_05_06_29_38_0_tmb.png",
+        f"{path_root}/tests/mockup_images/2025_03_05_06_29_38_0_tmb.png",
+        f"{path_root}/tests/mockup_images/2025_03_05_06_29_38_1_tmb.png",
+        f"{path_root}/tests/mockup_images/2025_03_05_06_29_38_2_tmb.png",
+        f"{path_root}/tests/mockup_images/2025_03_05_06_29_38_3_tmb.png",
+        f"{path_root}/tests/mockup_images/2025_03_05_06_29_38_4_tmb.png",
     ]
 
     for image in images:

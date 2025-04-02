@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 
-
 {% block title %}Posts{% endblock %}
-
 
 {% if g.user %}
   {% block navbar %}
@@ -32,11 +30,11 @@
 
   <div class="container text-center">
     <div class="row row-cols-2">
+      {% for thumb in post['thumbs'] %}
         <div class="col">
           <a href="{{ url_for('blog.carousel', post_id=post['id']) }}" target="_self">
             <img src="{{url_for('static', filename=thumb)}}" class="card-img-top img-fluid" loading="lazy" alt="...">
           </a>
-          {{url_for('static', filename=thumb)}}
         </div>
       {% endfor %}
     </div>
@@ -57,8 +55,8 @@
         {% if loc %}
           <button class="btn btn-primary rounded-pill btn-info" style="background-color: rgb(150,200,255)" type="button">{{ loc }}</button>
         {% endif %}
-      {% endfor %}
 
+      {% endfor %}
       {% for loc in post['locations']['nfn'] %}
         {% if loc %}
           <button class="btn btn-primary rounded-pill btn-info" type="button">{{ loc }}</button>
@@ -79,6 +77,8 @@
     {% if not loop.last %}
       <br><br>
     {% endif %}
+
+  {% endfor %}
 
 </div>
 

@@ -32,12 +32,17 @@ def image_process(containers: "MultiDict") -> tuple:
         current_app.config["IMAGE_ROOT_FOLDER"],
         formatted_date
     )
-    image_save_path: str = current_app.config["IMAGE_UPLOAD_FOLDER"].format(
+    image_save_path: str = os.path.join(
+        current_app.config["ROOT_PATH"],
+        current_app.config["IMAGE_UPLOAD_FOLDER"].format(
         yyyy_mm=formatted_date
+        )
     )
-    thumbnail_save_path: str = current_app.config[
-        "IMAGE_THUMBNAIL_UPLOAD_FOLDER"].format(
+    thumbnail_save_path: str = os.path.join(
+        current_app.config["ROOT_PATH"],
+        current_app.config[ "IMAGE_THUMBNAIL_UPLOAD_FOLDER"].format(
         yyyy_mm=formatted_date
+        )
     )
     if not os.path.exists(date_path):
         os.mkdir(date_path)

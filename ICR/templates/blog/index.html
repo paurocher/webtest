@@ -12,10 +12,6 @@
 
 {% block main %}
 
-<!--{% for post in posts %} {{ post }} <br><br>{% endfor %}-->
-
-<!--<div class="d-flex justify-content-center vh-100 align-items-center">-->
-{{ posts }}
 <div class="col-10 mx-auto" align="center">
 {% for post in posts %}
 <div class="card min-vw-2 max-vw-10" style="min-width: 10rem; max-width: 30rem">
@@ -34,8 +30,6 @@
       </div>
     </div>
 
-<!--  <img src="static/images/2024_12/thumbnails/2020_03_01_08_47_12_tmb.jpg" class="card-img img-fluid" loading="lazy" alt="...">-->
-
   <div class="container text-center">
     <div class="row row-cols-2">
       {% for thumb in post['thumbs'] %}
@@ -46,16 +40,12 @@
           {{url_for('static', filename=thumb)}}
         </div>
       {% endfor %}
-<!--      make thumbnails clickable and they open up a carousel of all the images-->
-<!--      make last thumbnail display total number of imgs if more than 4-->
     </div>
   </div>
 
     <div class="card-body">
       <h4 class="card-title text-start">{{ post['title'] }}</h4>
-<!--      <h6 class="card-subtitle mb-2 text-muted">Card Subtitle</h6>-->
       <p class="card-text text-start">{{ post['message'] }}</p>
-<!--      <a href="#" class="btn btn-primary">Go somewhere</a>-->
       {% if g.user['id'] == post['user_id'] %}
         <a class="action" href="{{ url_for('blog.edit', post_id=post['id']) }}">Edit</a>
       {% endif %}

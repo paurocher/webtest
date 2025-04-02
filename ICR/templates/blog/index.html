@@ -57,8 +57,8 @@
         {% if loc %}
           <button class="btn btn-primary rounded-pill btn-info" style="background-color: rgb(150,200,255)" type="button">{{ loc }}</button>
         {% endif %}
-
       {% endfor %}
+
       {% for loc in post['locations']['nfn'] %}
         {% if loc %}
           <button class="btn btn-primary rounded-pill btn-info" type="button">{{ loc }}</button>
@@ -79,7 +79,6 @@
     {% if not loop.last %}
       <br><br>
     {% endif %}
-  {% endfor %}
 
 </div>
 

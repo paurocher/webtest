@@ -33,7 +33,7 @@ def register():
         if not error:
             existing_name = db.execute(
                 "SELECT name FROM users WHERE name IS ?;",
-                (username)
+                (username, )
             ).fetchall()
             existing_name = [user['name'] for user in existing_name]
             if existing_name:

@@ -1,7 +1,6 @@
 """All functions related to communicating with the database."""
 
 from flask import g
-from pprint import pprint as pp
 from werkzeug.exceptions import abort
 
 from ICR.db import get_db

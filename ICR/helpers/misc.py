@@ -5,9 +5,6 @@ from user_agents import parse
 from werkzeug.user_agent import UserAgent
 
 
-# from ICR.__app import app
-
-
 def login_required(f):
     """
     Decorate routes to require login.
@@ -22,6 +19,34 @@ def login_required(f):
         return f(*args, **kwargs)
 
     return decorated_function
+
+
+def new_password_quality(username, password, confirmation):
+    """
+
+    Args:
+        username:
+        password:
+        confirmation:
+
+    Returns:
+
+    """
+    error = None
+    # series of checks to make sure the password and username fills the
+    # requirements
+    if not username:
+        error = 'Username is required.'
+    elif not password:
+        error = 'Password is required.'
+    if len(password) < 6:
+        error = f"Password must be at least 6 characters long."
+    if password.isalnum():
+        error = f"Password must contain at least one special character."
+    if password != confirmation:
+        error = f"Password and confirmation must match."
+
+    return error
 
 
 def apology(message, code=400):

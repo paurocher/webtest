@@ -4,6 +4,8 @@ from datetime import datetime
 import click
 from flask import current_app, g
 
+# Tells Python how to interpret timestamp values in the database.
+# We convert the value to a datetime.datetime.
 sqlite3.register_converter(
     "timestamp", lambda v: datetime.fromisoformat(v.decode())
 )
@@ -19,8 +21,8 @@ def init_app(app):
     Returns:
 
     """
-    # tells Flask to call that function when cleaning up after returning the
-    # response.
+    # tells Flask to close the connection to the DB when cleaning up after
+    # returning the response.
     app.teardown_appcontext(close_db)
     # adds a new command that can be called with the flask command
     app.cli.add_command(init_db_command)

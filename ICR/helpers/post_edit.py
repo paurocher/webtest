@@ -1,7 +1,7 @@
 """Functions related to data editing and deletion."""
-from flask import flash, Request, url_for
+from icecream import ic
+from flask import flash, Request, current_app
 import os.path
-from pprint import pprint as pp
 from pathlib import Path
 
 # from ICR.__app import app
@@ -242,12 +242,18 @@ def update_images(post: dict, request: Request) -> None:
     checkboxes = {k: v for k, v in request.form.items() if "checkbox" in k}
 
     db = get_db()
+    ic(checkboxes)
     for checkbox, paths in checkboxes.items():
         paths = eval(paths)
         # delete paths
         for path in paths:
-            root_path = __file__.split(os.path.sep)[:-3]
-            path = os.path.join("/", *root_path, "ICR", "static", path)
+            path = os.path.join(
+                current_app.config["ROOT_PATH"],
+                "ICR",
+                "static",
+                path[1:]
+            )
+
             path = Path(path)
             path.unlink()
 

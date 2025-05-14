@@ -42,6 +42,11 @@ https://ttl255.com/jinja2-tutorial-part-1-introduction-and-variable-substitution
 https://python-adv-web-apps.readthedocs.io/en/latest/index.html
  - Helped me greatly in different aspects: from flask to sql abd jinja.
 
+https://flask.palletsprojects.com/en/stable/patterns/fileuploads/
+https://blog.miguelgrinberg.com/post/handling-file-uploads-with-flask
+ - File uploads was totally new to me. Thanks to these 2 links I got all the necessary information to do it.
+
+
 ## Motivations
 - Consolidate CS50 knowledge.
   One of my favorite things I have learned during this course has been the database creation and management (even though I apparently failed at the Fiftyville project :D ).
@@ -83,70 +88,95 @@ Here, I am going to describe the things I have been implementing in the project.
 
 Here is a trimmed structure of the project:
 ```
-ICR
-├── __app.py
-├── auth.py
-├── blog.py
-├── db.py
-├── helpers.py
-├── __init__.py
-├── misc
-│         ├── database_utils.py
-│         ├── ice_climbing.sqlite
-│         ├── icons.kra
-│         └── xnview_scale_crop_preset_001.xbs
-├── schema.sql
-├── static
-│         ├── css
-│         │         └── main.css
-│         ├── icons
-│         │         └── icons
-│         │             ├── icon_01.PNG
-│         │             └── ...
-│         └── images
-│             ├── 2024_12
-│             │         ├── pictures
-│             │         │         ├── 2020_03_01_08_47_12.jpg
-│             │         │         └── ...
-│             │         └── thumbnails
-│             │             ├── 2020_03_01_08_47_12_tmb.jpg
-│             │             └── file_tmb.jpg
-│             ├── 2025_01
-│             │         ├── pictures
-│             │         │         ├── 2020_03_01_10_18_12.jpg
-│             │         │         └── ...
-│             │         └── thumbnails
-│             │             ├── 2020_03_01_10_18_12_tmb.jpg
-│             │             └── ...
-│             ├── 2025_02
-│             │         ├── pictures
-│             │         │         ├── 2020_12_30_09_18_34.jpg
-│             │         │         └── ...
-│             │         └── thumbnails
-│             │             ├── 2020_12_30_09_18_34_tmb.jpg
-│             │             └── ...
-│             ├── favicon.ico
-│             └── I_heart_validator.png
-└── templates
+webtest
+├── ICR
+│     ├── auth.py
+│     ├── blog.py
+│     ├── config.py
+│     ├── db.py
+│     ├── helpers
+│     │     ├── image_process.py
+│     │     ├── __init__.py
+│     │     ├── misc.py
+│     │     ├── post_edit.py
+│     │     ├── __pycache__
+│     │     │     ├── image_process.cpython-38.pyc
+│     │     │     ├── __init__.cpython-38.pyc
+│     │     │     ├── misc.cpython-38.pyc
+│     │     │     ├── post_edit.cpython-38.pyc
+│     │     │     └── sql_functions.cpython-38.pyc
+│     │     └── sql_functions.py
+│     ├── __init__.py
+│     ├── misc
+│     │     ├── icons.kra
+│     │     ├── icons.kra~
+│     │     └── xnview_scale_crop_preset_001.xbs
+│     ├── requirements.txt
+│     ├── schema.sql
+│     ├── static
+│     │     ├── css
+│     │     │     └── main.css
+│     │     ├── icons
+│     │     │     ├── avatars
+│     │     │     │     ├── icon_01.PNG
+│     │     │     │     ├── ...
+│     │     │     ├── favicon.ico
+│     │     │     └── I_heart_validator.png
+│     │     └── images
+│     │         ├── 2025_03
+│     │         │     ├── pictures
+│     │         │     │     ├── 2025_03_05_06_29_38_0.jpg
+│     │         │     │     ├── ...
+│     │         │     └── thumbnails
+│     │         │         ├── 2025_03_05_06_29_38_0_tmb.png
+│     │         │         ├── ...
+│     │         └── 2025_04
+│     │             ├── pictures
+│     │             │     ├── 2025_04_01_22_16_16_0.jpg
+│     │             │     ├── ...
+│     │             └── thumbnails
+│     │                 ├── 2025_04_01_22_16_16_0_tmb.png
+│     │                 ├── ...
+│     └── templates
+│         ├── auth
+│         │     ├── login.html
+│         │     ├── psswd_change.html
+│         │     └── register.html
+│         ├── base.html
+│         ├── blog
+│         │     ├── create.html
+│         │     ├── create_mobile.html
+│         │     ├── edit.html
+│         │     ├── full_screen_carousel.html
+│         │     └── index.html
+│         └── post_template.html
+├── instance
+├── personal
+│     ├── notes.md
+│     └── paurocher_pythonanywhere_com_wsgi.py
+├── __pycache__
+├── README.md
+├── tests
+│     ├── db_insertion.py
+│     ├── generate_images_for_post.py
+│     ├── mockup_images
+│     │     ├── 2025_03_05_06_29_38_0.jpg
+│     │     ├── 2025_03_05_06_29_38_0_tmb.png
+│     │     ├── ...
+│     └── test_image_processing.py
+└── trash
     ├── apology.html
-    ├── auth
-    │         ├── login.html
-    │         └── register.html
-    ├── base.html
-    ├── blog
-    │         ├── create.html
-    │         ├── index_grid.html
-    │         ├── _index.html
-    │         ├── index.html
-    │         └── update.html
     ├── create_report.html
+    ├── dd__app.py
+    ├── _edit.html
     ├── full_screen_carousel1.html
-    ├── full_screen_carousel.html
-    ├── index_old.html
-    └── post_template.html
+    ├── index_grid.html
+    ├── _index.html
+    └── index_old.html
+
 ```
 
-###misc
+###misc: no apoologies, opted for flash messages
 #####database_utils.py
 
 #####ice_climbing.sqlite
@@ -170,18 +200,17 @@ Write a general ru about the templates and blueprnts. Enter into more detail int
 details about this script and how I structured the database. Maybe include the drawing!!!
 
 
-## Tools used
-### Git
+### Tools used
+#### Git
 I do not feel very at ease with git still. I have mostly worked off-line, mainly on a branch and not pushing to it very often. After running many tests to find the right recipe, I would delete the tests instead of branching off to another branch.
 I have used it professionally for many years, but always like an alchemist 
 working on the philosopher stone but fearing a big explosion that would fry my brain.
 I know the day I will lose this fear a bit I will feel much more comfortable with it.
 
-### Lazygit
+#### Lazygit
 This awesome tool has made me work faster and gain confidence with git. I will allways be grateful!!
 https://github.com/jesseduffield/lazygit
 
 
-file uploads:
-https://flask.palletsprojects.com/en/stable/patterns/fileuploads/
-https://blog.miguelgrinberg.com/post/handling-file-uploads-with-flask
+
+talk about icecream

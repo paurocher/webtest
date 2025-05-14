@@ -5,13 +5,13 @@ from user_agents import parse
 from werkzeug.user_agent import UserAgent
 
 
-def login_required(f):
-    """
-    Decorate routes to require login.
+def login_required(f: callable) -> callable:
+    """Decorate routes to require login.
+
+    f (callable): the function to be decorated
 
     https://flask.palletsprojects.com/en/latest/patterns/viewdecorators/
     """
-
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if session.get("user_id") is None:
@@ -21,18 +21,21 @@ def login_required(f):
     return decorated_function
 
 
-def new_password_quality(username, password, confirmation):
-    """
+def new_password_quality(
+    username: str,
+    password: str,
+    confirmation: str) -> str:
+    """Makes sure the new password is strong.
 
     Args:
-        username:
-        password:
-        confirmation:
+        username (str): the user name
+        password (str): the old password
+        confirmation (str): the new password
 
     Returns:
-
+        str
     """
-    error = None
+    error: str = ""
     # series of checks to make sure the password and username fills the
     # requirements
     if not username:
@@ -49,43 +52,19 @@ def new_password_quality(username, password, confirmation):
     return error
 
 
-def apology(message, code=400):
-    """Render message as an apology to user."""
-
-    def escape(s):
-        """
-        Escape special characters.
-
-        https://github.com/jacebrowning/memegen#special-characters
-        """
-        for old, new in [
-            ("-", "--"),
-            (" ", "-"),
-            ("_", "__"),
-            ("?", "~q"),
-            ("%", "~p"),
-            ("#", "~h"),
-            ("/", "~s"),
-            ('"', "''"),
-        ]:
-            s = s.replace(old, new)
-        return s
-
-    return render_template("apology.html", top=code, bottom=escape(message)), code
-
-def validate_file_type(path, allowed_extensions):
+def validate_file_type(path: str, allowed_extensions: list) -> bool:
     """Make sure the given file is in the allowed formats."""
 
     # ext without the dot
     try:
-        ext = os.path.splitext(path)[1].lower()[1:]
+        ext: str = os.path.splitext(path)[1].lower()[1:]
     except IndexError:
         return False
     if ext in allowed_extensions:
         return True
     return False
 
-def is_mobile():
+def is_mobile() -> bool:
     user_agent: str = request.headers.get("User-Agent")
     user_agent_parsed: UserAgent = parse(user_agent)
     device_type: str = (

@@ -1,4 +1,3 @@
-from icecream import ic
 import os
 from dotenv import load_dotenv
 
@@ -29,10 +28,8 @@ def create_app(test_config=None):
     Returns:
         flask.Flask
     """
-    ic(test_config)
-
     # create the app instance
-    app = Flask(__name__, instance_relative_config=True)
+    app: Flask = Flask(__name__, instance_relative_config=True)
 
     # load flask environment variables that are set in the .env file
     # app.config.from_prefixed_env()
@@ -50,7 +47,7 @@ def create_app(test_config=None):
         pass
 
     # database
-    db.init_app(app)
+    db.init_app(app) # TODO: do not pass the app. Grab it from current_app
 
     # blueprints
     from . import auth

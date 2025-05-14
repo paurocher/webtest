@@ -1,4 +1,3 @@
-from icecream import ic
 from flask import (
     Blueprint,
     flash,
@@ -46,8 +45,13 @@ def index() -> str:
 # the user is logged in.
 @login_required
 def create() -> str or Response:
+    """Create new post.
+
+    Returns:
+        str or Response: rendered template
+    """
     # is the user on a mobile device?
-    mobile = is_mobile()
+    mobile: bool = is_mobile()
 
     if request.method == "POST":
         title: str = request.form["title"]
@@ -104,8 +108,16 @@ def create() -> str or Response:
 # Trigger the login_required decorator so the create page is returned only if
 # the user is logged in.
 @login_required
-def edit(post_id):
-    post = get_complete_posts([post_id])[0]
+def edit(post_id: int) -> str or Response:
+    """
+
+    Args:
+        post_id:
+
+    Returns:
+
+    """
+    post: dict = get_complete_posts([post_id])[0]
     # quckly generating a list of tuples to pair thumbs and pictures and
     # adding them to the post, so I can pass them to the switches and easily
     # find both paths to delete
@@ -118,7 +130,7 @@ def edit(post_id):
         return render_template("blog/edit.html", post=post)
 
     # POST (Submit, Cancel, Delete)
-    action = request.form.get("action")
+    action: str = request.form.get("action")
     # delete post from DB
     if action == "Delete":
         delete_post(post)
@@ -126,7 +138,7 @@ def edit(post_id):
 
     elif action == "Submit":
         # update post
-        update = update_post(post, request)
+        update: bool = update_post(post, request)
         if not update:
             # something went wrong, return to post edit
             return render_template("blog/edit.html", post=post)
@@ -137,16 +149,24 @@ def edit(post_id):
 
 # associate the URL /carousel with the carousel view function
 @bp.route("/carousel/<int:post_id>")
-def carousel(post_id):
+def carousel(post_id: int) -> str:
+    """
+
+    Args:
+        post_id:
+
+    Returns:
+
+    """
     # get the current post complete dict
-    post = get_complete_posts([post_id])[0]
+    post: dict = get_complete_posts([post_id])[0]
 
     # place to store the images of the post
-    images = {}
+    images: dict = {}
 
     # One of the carousel images must have the "active" class, so the carousel
     # starts up showing an image. I will only add this class to the first image.
-    active = "active"
+    active: str = "active"
     for i, image in enumerate(post["images"]):
         if i > 0:
             active = ""

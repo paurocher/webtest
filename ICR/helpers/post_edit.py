@@ -1,16 +1,11 @@
 """Functions related to data editing and deletion."""
-from icecream import ic
 from flask import flash, Request, current_app
 import os.path
 from pathlib import Path
+from sqlite3 import Connection, Cursor
 
-# from ICR.__app import app
 from ICR.db import get_db
 from .image_process import image_process
-
-# a switch to avoid deleting all data and having to recreate it again and again
-# after each test.
-NO_DELETE = True
 
 
 def delete_post(post: dict) -> None:
@@ -19,17 +14,14 @@ def delete_post(post: dict) -> None:
     Args:
         post(dict): a complete post
     """
-    db = get_db()
+    db: Connection = get_db()
 
     # delete post
     db.execute("DELETE FROM posts WHERE id = ?", (post["id"],))
     db.commit()
 
     # delete images and thumbs
-    if NO_DELETE:
-        pass
-    else:
-        delete_images(post)
+    delete_images(post)
 
     # locations (fn, nfn)
     delete_locations(post)
@@ -43,18 +35,22 @@ def delete_images(post: dict) -> None:
 
     Args:
         post(dict): a complete post"""
-    db = get_db()
-    images = post["images"] + post["thumbs"]
+    db: Connection = get_db()
+    images = [img for  sublist in post["images"] for img in sublist]
 
     db.execute(
         "DELETE FROM pictures WHERE post_id = ?", (post["id"],)
     )
     db.commit()
 
-    path_root = os.environ.get("IMAGE_ROOT_FOLDER")
+    root_path = os.path.join(
+        current_app.config["ROOT_PATH"],
+        "ICR",
+        "static",
+    )
     for image in images:
-        img_path = os.path.sep.join(image.split(os.path.sep)[1:])
-        img_path = os.path.join(path_root, img_path)
+        img_path: str = os.path.sep.join(image.split(os.path.sep)[1:])
+        img_path: str = os.path.join(root_path, img_path)
         os.remove(img_path)
 
 
@@ -65,9 +61,9 @@ def delete_locations(post: dict) -> None:
 
     Args:
         post(dict): a complete post"""
-    db = get_db()
+    db: Connection = get_db()
 
-    nations = {
+    nations: dict = {
         "posts_fn_locations": "fn_locations",
         "posts_nfn_locations": "nfn_locations"
     }
@@ -76,18 +72,19 @@ def delete_locations(post: dict) -> None:
         #    to other posts
         # Get each location id only referred by this post. As they are not
         # referred by other posts, we can safely delete these locations
-        sql_select_command = (
+        sql_select_command: str = (
             f"SELECT * FROM {relationship} WHERE location_id IN "
             f"(SELECT location_id FROM {relationship} WHERE post_id = ?) "
             "GROUP BY location_id "
             "HAVING COUNT (location_id) = 1"
         )
-        delete_locs = db.execute(sql_select_command, (post["id"],)).fetchall()
-        delete_locs = [loc["location_id"] for loc in delete_locs]
+        delete_locs: list = db.execute(sql_select_command, (post["id"],
+        )).fetchall()
+        delete_locs: list = [loc["location_id"] for loc in delete_locs]
 
         # 2. delete any location that relates only to this post, not other posts
         if delete_locs:
-            sql_del_command = (
+            sql_del_command: str = (
                 f"DELETE FROM {locations} WHERE id IN "
                 f"({', '.join(['?']*len(delete_locs))})"
             )
@@ -95,7 +92,7 @@ def delete_locations(post: dict) -> None:
             db.commit()
 
         # 3. delete relationship
-        sql_del_command = (
+        sql_del_command: str = (
             f"DELETE FROM {relationship} WHERE post_id = ?"
         )
         db.execute(sql_del_command, (post["id"],))
@@ -109,7 +106,7 @@ def delete_tags(post: dict) -> None:
 
     Args:
         post(dict): a complete post"""
-    db = get_db()
+    db: Connection = get_db()
 
     # same workflow as in the locations. I know, putting the same comments is
     # redundant, but it helps me keep track ...
@@ -118,18 +115,20 @@ def delete_tags(post: dict) -> None:
     #    to other posts
     # Get each tag id only referred by this post. As they are not
     # referred by other posts, we can safely delete these tags.
-    sql_select_command = (
+    sql_select_command: str = (
         f"SELECT * FROM posts_tags WHERE tag_id IN "
         f"(SELECT tag_id FROM posts_tags WHERE post_id = ?) "
         "GROUP BY tag_id "
         "HAVING COUNT (tag_id) = 1"
     )
-    _delete_tags = db.execute(sql_select_command, (post["id"],)).fetchall()
-    _delete_tags = [tag["tag_id"] for tag in _delete_tags]
+    _delete_tags: list = db.execute(
+        sql_select_command, (post["id"],)
+    ).fetchall()
+    _delete_tags: list = [tag["tag_id"] for tag in _delete_tags]
 
     # 2.
     if _delete_tags:
-        sql_del_command = (
+        sql_del_command: str = (
             f"DELETE FROM tags WHERE id IN "
             f"({', '.join(['?'] * len(_delete_tags))})"
         )
@@ -137,7 +136,7 @@ def delete_tags(post: dict) -> None:
         db.commit()
 
     # 3. delete relationship
-    sql_del_command = (
+    sql_del_command: str = (
         f"DELETE FROM posts_tags WHERE post_id = ?"
     )
     db.execute(sql_del_command, (post["id"],))
@@ -155,12 +154,12 @@ def update_post(post: dict, request: Request) -> bool:
         bool: True if the post was updated or left unchanged, False otherwise
     """
     # title
-    title = update_title(post, request)
+    title: bool = update_title(post, request)
     if not title:
         return False
 
     # message
-    message = update_message(post, request)
+    message: bool = update_message(post, request)
     if not message:
         return False
 
@@ -185,7 +184,7 @@ def update_title(post: dict, request: Request) -> bool:
     Returns:
         bool: True if the title was updated or left unchanged, False otherwise
     """
-    title = request.form["title"]
+    title: str = request.form["title"]
 
     if not title:
         flash("Title is required.")
@@ -198,7 +197,7 @@ def update_title(post: dict, request: Request) -> bool:
         return True
 
     # title has changed, let's update it
-    db = get_db()
+    db: Connection = get_db()
     db.execute("UPDATE posts SET title = ? WHERE id = ?", (title, post["id"]))
     db.commit()
     return True
@@ -213,7 +212,7 @@ def update_message(post: dict, request: Request) -> bool:
     Returns:
         bool: True if the message was updated or left unchanged, False otherwise
     """
-    message = request.form["message"]
+    message: str = request.form["message"]
 
     if not message:
         flash("Message is required.")
@@ -224,7 +223,7 @@ def update_message(post: dict, request: Request) -> bool:
         return True
 
     # message has changed, let's update it
-    db = get_db()
+    db: Connection = get_db()
     db.execute(
         "UPDATE posts SET message = ? WHERE id = ?", (message, post["id"])
     )
@@ -236,25 +235,28 @@ def update_images(post: dict, request: Request) -> None:
     """Update the images of a post.
 
     Args:
-        post(dict): a complete post"""
+        post(dict): a complete post
+        request (Request): the request object
+        """
 
     # get the switches for the existing images
-    checkboxes = {k: v for k, v in request.form.items() if "checkbox" in k}
+    checkboxes: dict = {
+        k: v for k, v in request.form.items() if "checkbox" in k
+    }
 
-    db = get_db()
-    ic(checkboxes)
+    root_path = os.path.join(
+        current_app.config["ROOT_PATH"],
+        "ICR",
+        "static",
+    )
+
+    db: Connection = get_db()
     for checkbox, paths in checkboxes.items():
-        paths = eval(paths)
+        paths: list = eval(paths)
         # delete paths
         for path in paths:
-            path = os.path.join(
-                current_app.config["ROOT_PATH"],
-                "ICR",
-                "static",
-                path[1:]
-            )
-
-            path = Path(path)
+            path: str = os.path.sep.join([root_path, path])
+            path: Path = Path(path)
             path.unlink()
 
         # delete the image relationship
@@ -263,8 +265,7 @@ def update_images(post: dict, request: Request) -> None:
 
 
     # get the new images
-    new_images = request.files
-    images = image_process(
+    images: list = image_process(
         [
             request.files.getlist("files"),
             request.files.getlist("cam_files")
@@ -274,20 +275,23 @@ def update_images(post: dict, request: Request) -> None:
     # 1. get latest image order number
     latest = db.execute("SELECT MAX(picture_order) FROM pictures "
                "WHERE post_id = ?", (post["id"],))
-    order = latest.fetchone()[0]
-    print(f"{order=}")
+    order: int = latest.fetchone()[0]
 
-    for image in images:
-        print(image)
-        order += 1
+    for i, image_group in enumerate(images):
+        if order:
+            order += 1
+        else:
+            order = 1
+        img_path = image_group[0]
+        thmb_path = image_group[1]
         db.execute(
             "INSERT INTO pictures (post_id, picture_order, path, thumb) "
             "VALUES (?, ?, ?, ?)",
-            (post["id"], order,image[0], image[1])
+            (post["id"], order, img_path, thmb_path)
         )
     db.commit()
 
-def update_locations(post: dict, request: Request) -> bool:
+def update_locations(post: dict, request: Request) -> bool or None:
     """Update the locations of a post.
 
     Args:
@@ -303,7 +307,7 @@ def update_locations(post: dict, request: Request) -> bool:
     nfn_locations: list = request.form["nfn_locations"].split(",")
     nfn_locations: list = [loc for loc in nfn_locations if loc]
 
-    locations = {
+    locations: dict = {
         "fn_locations": fn_locations,
         "nfn_locations": nfn_locations
     }
@@ -314,7 +318,7 @@ def update_locations(post: dict, request: Request) -> bool:
         return True
 
     # removed locations
-    deleted_locations = {
+    deleted_locations: dict = {
         "fn_locations": [
             loc for loc in post["locations"]["fn"] if loc not in fn_locations
         ],
@@ -325,16 +329,16 @@ def update_locations(post: dict, request: Request) -> bool:
 
     # search if any other post has this tag assigned. If so, only delete
     # relationship, otherwise delete relationship and tag
-    db = get_db()
+    db: Connection = get_db()
     for nation, locs in deleted_locations.items():
         for loc in locs:
             # get location id
-            location_id = db.execute(
+            location_id: int = db.execute(
                 f"SELECT id FROM {nation} WHERE toponym = ?", (loc,)
             ).fetchone()["id"]
             # check if this location is only assigned to one post (which would
             # be this post we are dealing with)
-            location_rels = db.execute(
+            location_rels: list = db.execute(
                 f"SELECT post_id FROM posts_{nation} WHERE location_id = "
                 f"(SELECT id FROM {nation} WHERE toponym = ?) "
                 "GROUP by location_id "
@@ -342,7 +346,6 @@ def update_locations(post: dict, request: Request) -> bool:
                 (loc,)
             ).fetchall()
             location_rels = [post["post_id"] for post in location_rels if loc]
-            print(nation, loc, location_rels)
 
             if location_rels:
                 # delete locaion as it is used only by this post
@@ -355,33 +358,33 @@ def update_locations(post: dict, request: Request) -> bool:
             db.commit()
 
     # added locations
-    new_fn_locs = [
+    new_fn_locs: list = [
         loc for loc in locations["fn_locations"] if loc not in
         post["locations"]["fn"]
     ]
-    new_nfn_locs = [
+    new_nfn_locs: list = [
         loc for loc in locations["nfn_locations"] if loc not in
         post ["locations"]["nfn"]
     ]
-    new_locations = {
+    new_locations: dict = {
         "fn_locations": new_fn_locs,
         "nfn_locations": new_nfn_locs
     }
     for nation, locations in new_locations.items():
         for loc in locations:
             # figure out if this tag already exists
-            duplicate = db.execute(
+            duplicate: dict = db.execute(
                 f"SELECT id FROM {nation} WHERE toponym = ?", (loc,)
             ).fetchone()
             if duplicate:
                 # if it does exits, lets grab its id and assign it to this var
-                new_loc_id = duplicate["id"]
+                new_loc_id: int = duplicate["id"]
             else:
                 # if it doesn't exist, let's add it to the db
-                new_loc_id = db.execute(
+                new_loc_id: Cursor = db.execute(
                     f"INSERT INTO {nation} (toponym) VALUES (?)", (loc,)
                 )
-                new_loc_id = new_loc_id.lastrowid
+                new_loc_id: int = new_loc_id.lastrowid
 
             # create relationship of this new location and the post we are
             # editing
@@ -409,25 +412,25 @@ def update_tags(post: dict, request: Request) -> bool:
         return True
 
     # removed tags
-    deleted_tags = [tag for tag in post["tags"] if tag not in tags]
+    deleted_tags: list = [tag for tag in post["tags"] if tag not in tags]
     # search if any other post has this tag assigned. If so, only delete
     # relationship, otherwise delete relationship and tag
-    db = get_db()
+    db: Connection = get_db()
     for tag in deleted_tags:
         # get tag id
-        tag_id = db.execute(
+        tag_id: int = db.execute(
             "SELECT id FROM tags WHERE tag = ?", (tag,)
         ).fetchone()["id"]
         # check if this tag is only assigned to one post (which would be this
         # post we are dealing with)
-        tag_rels = db.execute(
+        tag_rels: list = db.execute(
             "SELECT post_id FROM posts_tags WHERE tag_id = "
             "(SELECT id FROM tags WHERE tag = ?) "
             "GROUP BY tag_id "
             "HAVING COUNT (tag_id) = 1"
             , (tag,)
         ).fetchall()
-        tag_rels = [post["post_id"] for post in tag_rels if tag]
+        tag_rels: list = [post["post_id"] for post in tag_rels if tag]
 
         if tag_rels:
             # delete tag, beause it is not used by any other post
@@ -441,10 +444,10 @@ def update_tags(post: dict, request: Request) -> bool:
         db.commit()
 
     # added tags
-    new_tags = [tag for tag in tags if tag not in post["tags"]]
+    new_tags: list = [tag for tag in tags if tag not in post["tags"]]
     for tag in new_tags:
         # figure out if this tag already exists
-        duplicate = db.execute(
+        duplicate: dict = db.execute(
             "SELECT id FROM tags WHERE tag = ?", (tag,)
         ).fetchone()
         if duplicate:
@@ -452,8 +455,10 @@ def update_tags(post: dict, request: Request) -> bool:
             new_tag_id = duplicate["id"]
         else:
             # if it doesn't exist, let's add it to the database
-            new_tag_id = db.execute("INSERT INTO tags (tag) VALUES (?)", (tag,))
-            new_tag_id = new_tag_id.lastrowid
+            new_tag_id: Cursor = db.execute(
+                "INSERT INTO tags (tag) VALUES (?)", (tag,)
+            )
+            new_tag_id: int = new_tag_id.lastrowid
             # db.execute(
             #     "INSERT INTO posts_tags (post_id, tag_id) VALUES (?, ?)",
             #     (post["id"], new_tag_id))

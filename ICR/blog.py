@@ -26,7 +26,6 @@ bp = Blueprint("blog", __name__)
 @bp.route("/")
 def index() -> str:
     db: Connection = get_db()
-    ic(session.get('user_id'))
 
     # get all post ids
     post_ids: list = db.execute(

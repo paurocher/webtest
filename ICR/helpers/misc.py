@@ -1,30 +1,14 @@
-from flask import redirect, render_template, session, request
+from flask import redirect, session, request
 from functools import wraps
 import os
 from user_agents import parse
 from werkzeug.user_agent import UserAgent
 
 
-def login_required(f: callable) -> callable:
-    """Decorate routes to require login.
-
-    f (callable): the function to be decorated
-
-    https://flask.palletsprojects.com/en/latest/patterns/viewdecorators/
-    """
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if session.get("user_id") is None:
-            return redirect("/login")
-        return f(*args, **kwargs)
-
-    return decorated_function
-
-
 def new_password_quality(
-    username: str,
-    password: str,
-    confirmation: str) -> str:
+        username: str,
+        password: str,
+        confirmation: str) -> str:
     """Makes sure the new password is strong.
 
     Args:
@@ -43,11 +27,11 @@ def new_password_quality(
     elif not password:
         error = 'Password is required.'
     if len(password) < 6:
-        error = f"Password must be at least 6 characters long."
+        error = "Password must be at least 6 characters long."
     if password.isalnum():
-        error = f"Password must contain at least one special character."
+        error = "Password must contain at least one special character."
     if password != confirmation:
-        error = f"Password and confirmation must match."
+        error = "Password and confirmation must match."
 
     return error
 
@@ -64,7 +48,17 @@ def validate_file_type(path: str, allowed_extensions: list) -> bool:
         return True
     return False
 
+
 def is_mobile() -> bool:
+    """Determine if the current request is from a mobile device.
+
+    Analyzes the 'User-Agent' header from the request to deduce the type of
+    device making the request. Returns True if the device is a mobile or
+    tablet, and False if it's a desktop.
+
+    Returns:
+        bool: True if the device is mobile or tablet, False if desktop.
+    """
     user_agent: str = request.headers.get("User-Agent")
     user_agent_parsed: UserAgent = parse(user_agent)
     device_type: str = (

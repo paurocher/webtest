@@ -11,16 +11,15 @@ sqlite3.register_converter(
     "timestamp", lambda v: datetime.fromisoformat(v.decode())
 )
 
+
 def init_app(app: Flask) -> None:
     """
 
-    https://flask.palletsprojects.com/en/stable/tutorial/database/#register-with-the-application
+    https://flask.palletsprojects.com/en/stable/tutorial/database/
+    #register-with-the-application
 
     Args:
-        app:
-
-    Returns:
-
+        app (Flask): a flas application
     """
     # tells Flask to close the connection to the DB when cleaning up after
     # returning the response.
@@ -31,6 +30,16 @@ def init_app(app: Flask) -> None:
 
 @click.command('init-db')
 def init_db_command() -> None:
+    """Command to initialize the database.
+
+    This function is bound to the `init-db` subcommand of the `flask` command.
+    It reads the SQL script from `schema.sql` and applies it to the database.
+
+    Args:
+
+    Returns:
+        None
+    """
     db: Connection = get_db()
     with current_app.open_resource("schema.sql") as f:
         script: str = f.read().decode('unicode_escape')

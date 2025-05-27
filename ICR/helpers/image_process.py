@@ -11,7 +11,19 @@ from PIL import Image, ImageOps
 from ICR.helpers.misc import validate_file_type
 
 
-def image_process(containers:list) -> list:
+def image_process(containers: list) -> list:
+    """
+    Process a list of werkzeug.datastructures.FileStorage objects to
+    determine if they are valid images and save them to the appropriate
+    directory.
+
+    Args:
+        containers (list): A list of lists of
+                           werkzeug.datastructures.FileStorage.
+
+    Returns:
+        list: A list of tuples of the form (img_rel_path, thmb_rel_path).
+    """
     # get images if extension is valid
     valid_files: list = []
     for container in containers:
@@ -40,7 +52,7 @@ def image_process(containers:list) -> list:
     )
     thumbnail_save_path: Union[LiteralString, str, bytes] = os.path.join(
         current_app.config["ROOT_PATH"],
-        current_app.config[ "IMAGE_THUMBNAIL_UPLOAD_FOLDER"].format(
+        current_app.config["IMAGE_THUMBNAIL_UPLOAD_FOLDER"].format(
             yyyy_mm=formatted_date
         )
     )
@@ -93,6 +105,7 @@ def get_image_date() -> str:
     """
     return datetime.datetime.today().strftime("%Y_%m")
 
+
 def get_image_datetime() -> str:
     """Build a datetime string with for the image name.
 
@@ -100,6 +113,7 @@ def get_image_datetime() -> str:
         str
     """
     return datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+
 
 def generate_img_thmb_name(date: str, number: int, ext: str) -> tuple:
     """Generate file name based on date, time and an index.

@@ -5,7 +5,6 @@ from flask import Flask
 
 from .config import Config
 from . import (
-    helpers,
     db,
 )
 
@@ -47,7 +46,7 @@ def create_app(test_config=None):
         pass
 
     # database
-    db.init_app(app) # TODO: do not pass the app. Grab it from current_app
+    db.init_app(app)
 
     # blueprints
     from . import auth

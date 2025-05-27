@@ -36,7 +36,7 @@ def delete_images(post: dict) -> None:
     Args:
         post(dict): a complete post"""
     db: Connection = get_db()
-    images = [img for  sublist in post["images"] for img in sublist]
+    images = [img for sublist in post["images"] for img in sublist]
 
     db.execute(
         "DELETE FROM pictures WHERE post_id = ?", (post["id"],)
@@ -78,11 +78,12 @@ def delete_locations(post: dict) -> None:
             "GROUP BY location_id "
             "HAVING COUNT (location_id) = 1"
         )
-        delete_locs: list = db.execute(sql_select_command, (post["id"],
-        )).fetchall()
+        delete_locs: list = db.execute(
+            sql_select_command, (post["id"],)
+        ).fetchall()
         delete_locs: list = [loc["location_id"] for loc in delete_locs]
 
-        # 2. delete any location that relates only to this post, not other posts
+        # 2. delete any location that relates only to this post
         if delete_locs:
             sql_del_command: str = (
                 f"DELETE FROM {locations} WHERE id IN "
@@ -116,8 +117,8 @@ def delete_tags(post: dict) -> None:
     # Get each tag id only referred by this post. As they are not
     # referred by other posts, we can safely delete these tags.
     sql_select_command: str = (
-        f"SELECT * FROM posts_tags WHERE tag_id IN "
-        f"(SELECT tag_id FROM posts_tags WHERE post_id = ?) "
+        "SELECT * FROM posts_tags WHERE tag_id IN "
+        "(SELECT tag_id FROM posts_tags WHERE post_id = ?) "
         "GROUP BY tag_id "
         "HAVING COUNT (tag_id) = 1"
     )
@@ -137,7 +138,7 @@ def delete_tags(post: dict) -> None:
 
     # 3. delete relationship
     sql_del_command: str = (
-        f"DELETE FROM posts_tags WHERE post_id = ?"
+        "DELETE FROM posts_tags WHERE post_id = ?"
     )
     db.execute(sql_del_command, (post["id"],))
     db.commit()
@@ -210,7 +211,8 @@ def update_message(post: dict, request: Request) -> bool:
         post(dict): a complete post
         request(Request): the request object
     Returns:
-        bool: True if the message was updated or left unchanged, False otherwise
+        bool: True if the message was updated or left unchanged,
+              False otherwise
     """
     message: str = request.form["message"]
 
@@ -263,7 +265,6 @@ def update_images(post: dict, request: Request) -> None:
         db.execute("DELETE FROM pictures WHERE path = ?", (paths[0],))
     db.commit()
 
-
     # get the new images
     images: list = image_process(
         [
@@ -273,8 +274,10 @@ def update_images(post: dict, request: Request) -> None:
     )
     # create the image relationship
     # 1. get latest image order number
-    latest = db.execute("SELECT MAX(picture_order) FROM pictures "
-               "WHERE post_id = ?", (post["id"],))
+    latest = db.execute(
+        "SELECT MAX(picture_order) FROM pictures "
+        "WHERE post_id = ?", (post["id"],)
+    )
     order: int = latest.fetchone()[0]
 
     for i, image_group in enumerate(images):
@@ -290,6 +293,7 @@ def update_images(post: dict, request: Request) -> None:
             (post["id"], order, img_path, thmb_path)
         )
     db.commit()
+
 
 def update_locations(post: dict, request: Request) -> bool or None:
     """Update the locations of a post.
@@ -312,8 +316,10 @@ def update_locations(post: dict, request: Request) -> bool or None:
         "nfn_locations": nfn_locations
     }
 
-    if (locations["fn_locations"] == post["locations"]["fn"] and
-        locations["nfn_locations"] == post["locations"]["nfn"]):
+    if (
+        locations["fn_locations"] == post["locations"]["fn"] and
+        locations["nfn_locations"] == post["locations"]["nfn"]
+    ):
         # locations did not change
         return True
 
@@ -364,7 +370,7 @@ def update_locations(post: dict, request: Request) -> bool or None:
     ]
     new_nfn_locs: list = [
         loc for loc in locations["nfn_locations"] if loc not in
-        post ["locations"]["nfn"]
+        post["locations"]["nfn"]
     ]
     new_locations: dict = {
         "fn_locations": new_fn_locs,
@@ -393,6 +399,7 @@ def update_locations(post: dict, request: Request) -> bool or None:
                 f"?, ?)", (post["id"], new_loc_id)
             )
         db.commit()
+
 
 def update_tags(post: dict, request: Request) -> bool:
     """Update the tags of a post.
@@ -427,8 +434,8 @@ def update_tags(post: dict, request: Request) -> bool:
             "SELECT post_id FROM posts_tags WHERE tag_id = "
             "(SELECT id FROM tags WHERE tag = ?) "
             "GROUP BY tag_id "
-            "HAVING COUNT (tag_id) = 1"
-            , (tag,)
+            "HAVING COUNT (tag_id) = 1",
+            (tag,)
         ).fetchall()
         tag_rels: list = [post["post_id"] for post in tag_rels if tag]
 

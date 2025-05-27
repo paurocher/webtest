@@ -11,6 +11,7 @@ from flask import (
     session,
     url_for,
 )
+from sqlite3 import Connection
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from .db import get_db
@@ -21,7 +22,7 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 # associate the URL /register with the register view function
 @bp.route('/register', methods=('GET', 'POST'))
-def register() -> Response:
+def register() -> Response or str:
     """Register a new user.
 
     Returns:
@@ -30,24 +31,24 @@ def register() -> Response:
     username = None
     if request.method == 'POST':
         # gather form field values
-        username = request.form['username']
-        password = request.form['password']
-        confirmation = request.form.get("confirmation")
+        username: str = request.form['username']
+        password: str = request.form['password']
+        confirmation: str = request.form.get("confirmation")
 
         db = get_db()
 
         # check password complies with requirements
-        error = new_password_quality(username, password, confirmation)
+        error: str = new_password_quality(username, password, confirmation)
 
         if not error:
             # check if username is already in the DB
-            existing_name = db.execute(
+            existing_name: list = db.execute(
                 "SELECT name FROM users WHERE name IS ?;",
                 (username, )
             ).fetchall()
             existing_name = [user['name'] for user in existing_name]
             if existing_name:
-                error = f"User {username} is already registered."
+                error: str = f"User {username} is already registered."
 
             # all tests passed: insert new user in the DB
             try:
@@ -77,15 +78,15 @@ def login() -> str or Response:
     """
     if request.method == 'POST':
         # gather form field values
-        username = request.form['username']
-        password = request.form['password']
+        username: str = request.form['username']
+        password: str = request.form['password']
 
-        db = get_db()
+        db: Connection = get_db()
 
-        error = None
+        error: str or None = None
 
         # get user from the DB
-        user = db.execute(
+        user: str = db.execute(
             'SELECT * FROM users WHERE name = ?', (username,)
         ).fetchone()
 
@@ -119,12 +120,12 @@ def load_logged_in_user() -> None:
     sets the g.user variable to user or None so the pages render as a logged-in
     user or not.
     """
-    user_id = session.get('user_id')
+    user_id: int = session.get('user_id')
 
     if user_id is None:
         g.user = None
     else:
-        g.user = get_db().execute(
+        g.user: str = get_db().execute(
             'SELECT * FROM users WHERE id = ?', (user_id,)
         ).fetchone()
 
@@ -164,7 +165,7 @@ def login_required(view) -> Response:
 
 # associate the URL /psswd_change with the psswd_change view function
 @bp.route('/psswd_change', methods=('GET', 'POST'))
-def psswd_change() -> Response:
+def psswd_change() -> Response or str:
     """Change the password.
 
     Returns:
@@ -173,9 +174,9 @@ def psswd_change() -> Response:
     if request.method == "POST":
         if request.form.get("action") == "Submit":
             # Get form values
-            old_password = request.form["old_password"]
-            new_password = request.form["new_password"]
-            confirmation = request.form["confirmation"]
+            old_password: str = request.form["old_password"]
+            new_password: str = request.form["new_password"]
+            confirmation: str = request.form["confirmation"]
 
             error = False
             # checks specific to password upadte

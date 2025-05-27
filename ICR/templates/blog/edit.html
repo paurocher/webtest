@@ -13,9 +13,6 @@
 {% block title %}Edit Post "{{ post['title'] }}"{% endblock %}
 {% block main %}
 
-g.is_mobile:
-<strong>{% if mobile %}True{% else %}False{% endif %}</strong>
-
 <form method="post" enctype="multipart/form-data">
 
   <div class="row sm-3 frame">

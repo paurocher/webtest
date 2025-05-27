@@ -4,7 +4,6 @@ from flask import (
     redirect,
     render_template,
     request,
-    session,
     url_for,
 )
 from flask.wrappers import Response
@@ -22,9 +21,15 @@ from ICR.helpers.misc import is_mobile
 
 bp = Blueprint("blog", __name__)
 
+
 # associate the URL /index with the index view function
 @bp.route("/")
 def index() -> str:
+    """Shows all the posts currently in the database.
+
+    Returns:
+        str: The rendered HTML template with all the posts.
+    """
     db: Connection = get_db()
 
     # get all post ids
@@ -108,14 +113,15 @@ def create() -> str or Response:
 # the user is logged in.
 @login_required
 def edit(post_id: int) -> str or Response:
-    """
+    """Edit a post.
 
     Args:
-        post_id:
-
-    Returns:
-
+        post_id (int): post id to edit
     """
+    # is the user on a mobile device?
+    mobile: bool = is_mobile()
+    print(f"{mobile=}")
+
     post: dict = get_complete_posts([post_id])[0]
     # quckly generating a list of tuples to pair thumbs and pictures and
     # adding them to the post, so I can pass them to the switches and easily
@@ -126,7 +132,7 @@ def edit(post_id: int) -> str or Response:
 
     if request.method == "GET":
         # get the edit page filled in with the post data
-        return render_template("blog/edit.html", post=post)
+        return render_template("blog/edit.html", post=post, mobile=mobile)
 
     # POST (Submit, Cancel, Delete)
     action: str = request.form.get("action")
@@ -140,7 +146,7 @@ def edit(post_id: int) -> str or Response:
         update: bool = update_post(post, request)
         if not update:
             # something went wrong, return to post edit
-            return render_template("blog/edit.html", post=post)
+            return render_template("blog/edit.html", post=post, mobile=mobile)
 
     # all good, post got updated, go to index
     return redirect(url_for("blog.index"))
@@ -149,28 +155,31 @@ def edit(post_id: int) -> str or Response:
 # associate the URL /carousel with the carousel view function
 @bp.route("/carousel/<int:post_id>")
 def carousel(post_id: int) -> str:
-    """
+    """Render the carousel view for a specific post.
 
     Args:
-        post_id:
+        post_id (int): The ID of the post to display.
 
     Returns:
-
+        str: The rendered carousel view as a string.
     """
     # get the current post complete dict
+
     post: dict = get_complete_posts([post_id])[0]
 
     # place to store the images of the post
     images: dict = {}
 
     # One of the carousel images must have the "active" class, so the carousel
-    # starts up showing an image. I will only add this class to the first image.
+    # starts up showing an image. This class is only added to the first image.
     active: str = "active"
     for i, image in enumerate(post["images"]):
         if i > 0:
             active = ""
         images[i] = [f"/static/{image}", active]
     return (
-        render_template("blog/full_screen_carousel.html",
-        images=images)
+        render_template(
+            "blog/full_screen_carousel.html",
+            images=images
+        )
     )

@@ -66,8 +66,6 @@ def get_complete_posts(ids: list) -> list:
 
         complete_posts.append(container)
 
-    # TODO: pass in full picts (for carousel) and thumbnails (for blog)
-    # pp(complete_posts)
     return complete_posts
 
 

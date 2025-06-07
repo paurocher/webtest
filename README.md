@@ -2,61 +2,8 @@
 #### Video Demo:  <URL HERE>
 #### Description:
 
-## Sources
-docs.python.org
-Documentation about python modules I used like SQLite3
 
-https://flask.palletsprojects.com/en/stable/tutorial/
-Amazing tutorial that takes you deeper to dynamic web apps with flask than what we did on CS50. I took it as a base for this project. Many concepts were new to me. But searching documentation about them online I was able to learn so much more. Things like
- - creating SQL scripts, so I can easily initialize the database any time needed
- - defining command line commands with the click package
- - using flask blueprints (something we did not learn in CS50)
-
-https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
- - Together with the tutorial mentioned above, this one has been a real source of inspiration and a great place to find answers to my many, many questions.
-
-https://flask.palletsprojects.com/en/stable/api/#
-https://jinja.palletsprojects.com/en/stable/api/
-https://werkzeug.palletsprojects.com/en/stable/
-https://pillow.readthedocs.io
- - the manual reference for these various apis
-
-https://getbootstrap.com/docs/5.3/getting-started/introduction/
-https://www.sitepoint.com/bootstrap-grid-mastering-flexbox/
-https://www.sitepoint.com/understanding-and-using-rem-units-in-css/
- - I got at bit more at ease with html, css and bootstrap. The bootstrap documentation feels less cryptic now. Also thanks to the many tutorials and guides I found online, I was able to unblock many of the design choices I decided to make.
-
-https://www.stackoverflow.com
-https://www.w3schools.com/
- - For all and any questions about html, jinja, css, python, bootstrap, flask, ...
-
-www.rogers.com
- - Playing with my modem to open ports was a total failure. After breking my internet connection I realized I did not have my username and password to reconfigure the modem. The gentle people at Rogers helped me set it up back again. And this time I made sure to note down the configuration, username and password!! Now I can test my site in my computers and phones!! 
-
-https://ttl255.com/jinja2-tutorial-part-1-introduction-and-variable-substitution/
- - Great and detailed Jinja tutorials.
-
-https://python-adv-web-apps.readthedocs.io/en/latest/index.html
- - Helped me greatly in different aspects: from flask to sql abd jinja.
-
-https://flask.palletsprojects.com/en/stable/patterns/fileuploads/
-https://blog.miguelgrinberg.com/post/handling-file-uploads-with-flask
- - File uploads was totally new to me. Thanks to these 2 links I got all the necessary information to do it.
-
-
-## Motivations
-- Consolidate CS50 knowledge.
-  One of my favorite things I have learned during this course has been the database creation and management (even though I apparently failed at the Fiftyville project :D ).
-  Also, Flask and Jinja have sparked a lot of interest in me!
-- Centralize communication channels between ice climbers. 
-  So far we use a lot FaceBook and Messenger but finding past messages gets often difficult.
-- Reduce hazard.
-  Communication is a key part in safety. Quickly sharing current conditions can make for more informed decision-making.
-- Bring back the use of the first-nation toponomy.
-  Increase importance, care and culture levels by making people more aware of their surroundings history and cultural heritage.
-
-
-## The project
+## Introduction
 The "Ice Climbing Reports" project is a web application that allows users to communicate with each other about their ice climbing experiences. These experiences can be either weather reports, state of the ice in a particular climbing site, personal stories about a particular ice climbing experience, tips and tricks, car-pooling, etc ...
 
 I wanted it to be like a kind of facebook wall: a never ending scroll of reports organized by date where posts can have both text and images.
@@ -74,11 +21,23 @@ Hence, I wanted to practice and learn more about them.
 Flask and Jinja have opened a whole new world of possibilities for me. I have never been a big fan of html and css. But now, thanks to CS50's teachings about flask and jinja, I am feeling more open to it. 
 
 
+## Motivations
+- Consolidate CS50 knowledge.
+  One of my favorite things I have learned during this course has been the database creation and management (even though I apparently failed at the Fiftyville project :D ).
+  Also, Flask and Jinja have sparked a lot of interest in me!
+- Centralize communication channels between ice climbers. 
+  So far we use a lot FaceBook and Messenger but finding past messages gets often difficult.
+- Reduce hazard.
+  Communication is a key part in safety. Quickly sharing current conditions can make for more informed decision-making.
+- Bring back the use of the first-nation toponomy.
+  Increase importance, care and culture levels by making people more aware of their surroundings history and cultural heritage.
+
+
 ## Technical details
 
 I have started this project with a diagram in which I have been noting down all ideas I wanted to implement, database organization and web-site design. This is a step I like doing before I start coding. Eventually I leave it on the side because the coding and the program has enough presence to make me comfortable enough to concentrate more on the technical aspects. Eventually the diagram and the final product might not have much in common but at least it helped me kickstart the project.  
 The diagram:
-https://drive.google.com/file/d/1tlua4R3060MF6jgOKRuQO3Sunzpl2gNy/view?usp=sharing
+![README_img01.png](README_img01.png)
 
 ### Description of the code
 Here, I am going to describe the things I have been implementing in the project. I will present the information file by file but sometimes I will describe the general purpose of everything contain into a specific folder.
@@ -144,21 +103,6 @@ webtest
 *│         │     ├── full_screen_carousel.html
 *│         │     └── index.html
 *│         └── post_template.html
-├── instance
-├── personal
-│     ├── notes.md
-│     └── paurocher_pythonanywhere_com_wsgi.py
-├── README.md
-├── tests
-│     ├── db_insertion.py
-│     ├── generate_images_for_post.py
-│     ├── mockup_images
-│     │     ├── 2025_03_05_06_29_38_0.jpg
-│     │     ├── 2025_03_05_06_29_38_0_tmb.png
-│     │     ├── ...
-│     └── test_image_processing.py
-└── trash
-    └── ...
 ```
 
 ### webtest/ICR/__init__.py
@@ -389,33 +333,86 @@ It displays all available posts in the database. They are organized by date. I m
 A project for the future is to be able to filter the posts. Location tags and tags could be buttons that trigger filters, for example.
 
 
+## Documentation Sources
+https://docs.python.org
+https://docs.python.org/3/library/sqlite3.html
+I had to learn to manage the database through python. The official documentation is very good.
+
+https://flask.palletsprojects.com/en/stable/tutorial/
+Amazing tutorial that takes you deeper to dynamic web apps with flask than what we did on CS50. I took it as a base for this project. Many concepts were new to me. But searching documentation about them online I was able to learn so much more. Things like
+ - creating SQL scripts, so I can easily initialize the database any time needed
+ - defining command line commands with the click package
+ - using flask blueprints (something we did not learn in CS50)
+
+https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
+ - Together with the tutorial mentioned above, this one has been a real source of inspiration and a great place to find answers to my many, many questions.
+
+https://flask.palletsprojects.com/en/stable/api/#
+https://jinja.palletsprojects.com/en/stable/api/
+https://werkzeug.palletsprojects.com/en/stable/
+https://pillow.readthedocs.io
+ - the manual reference for these various apis
+
+https://getbootstrap.com/docs/5.3/getting-started/introduction/
+https://www.sitepoint.com/bootstrap-grid-mastering-flexbox/
+https://www.sitepoint.com/understanding-and-using-rem-units-in-css/
+ - I got at bit more at ease with html, css and bootstrap. The bootstrap documentation feels less cryptic now. Also thanks to the many tutorials and guides I found online, I was able to unblock many of the design choices I decided to make.
+
+https://www.stackoverflow.com
+https://www.w3schools.com/
+ - For all and any questions about html, jinja, css, python, bootstrap, flask, ...
+
+www.rogers.com
+ - Playing with my modem to open ports was a total failure. After breking my internet connection I realized I did not have my username and password to reconfigure the modem. The gentle people at Rogers helped me set it up back again. And this time I made sure to note down the configuration, username and password!! Now I can test my site in my computers and phones!! 
+
+https://ttl255.com/jinja2-tutorial-part-1-introduction-and-variable-substitution/
+ - Great and detailed Jinja tutorials.
+
+https://python-adv-web-apps.readthedocs.io/en/latest/index.html
+ - Helped me greatly in different aspects: from flask to sql abd jinja.
+
+https://flask.palletsprojects.com/en/stable/patterns/fileuploads/
+https://blog.miguelgrinberg.com/post/handling-file-uploads-with-flask
+ - File uploads was totally new to me. Thanks to these 2 links I got all the necessary information to do it.
+
+
 ### Tools used
 #### Git
-I do not feel very at ease with git still. I have mostly worked off-line, mainly on a branch and not pushing to it very often. After running many tests to find the right recipe, I would delete the tests instead of branching off to another branch.
+I do not feel very at ease with git still. I have mostly worked off-line, mainly on a branch and not pushing to it very often.
 I have used it professionally for many years, but always like an alchemist 
-working on the philosopher stone but fearing a big explosion that would fry my brain.
-I know the day I will lose this fear a bit I will feel much more comfortable with it.
+working on the philosopher stone but fearing a big explosion would fry my brain.
+I know that with practice, I will lose this fear a bit I will feel much more comfortable with it.
+Using lazygit has helped me a lot in gaining confidence in the common git operations.
 
 #### Lazygit
-This awesome tool has made me work faster and gain confidence with git. I will allways be grateful!!
+This awesome tool has made me work faster and gain confidence with git. I will allways be grateful!! Having always used git manually in a terminal, I know now what goes on behind the scenes when using lazygit, so I am not afraid to use it now.
 https://github.com/jesseduffield/lazygit
 
 
 #### https://validator.w3.org
-This site allowed me to validate the generated html in my pages. Seeing al the errors in early stages was eye-opening!
-
+This site allowed me to validate the generated html in my pages. Seeing al the errors in early stages was eye-opening! Great tool!!
 
 #### icecream
 This little python library allowed me to have a nice and clean debug output in the terminal with minimal effort.
 
 #### windsurf / cascade
 I used this pycharm plugin mainly to populate some docstrings at the very end of the project.
-I like writing my code and clarify my doubts or learn by consulting pages like stackoverflow, w3schools, flask, jinjaetc. Most of the time, autocompletion annoys me a lot. Also proposed code when chatting to the AI needs a lot of babysitting because it is often either wrong or accounts for way too many cases that are not relevant to my needs.
+I like writing my code and clarify my doubts or learn by consulting pages like stackoverflow, w3schools, flask, jinja, etc. Most of the time, autocompletion annoys me a lot. Also proposed code when chatting to the AI needs a lot of babysitting because it is often either wrong or accounts for way too many cases that are not relevant to my needs.
 
-Explain how the transition tho pythonanywhere went.
+### pythonanywhere
+I never put a web site on the internet, let alone a web app! pythonanywhere made it very easy although I had to make a few changes to the code to get it to work. For example, I had to rename my app to "app" (it was called "IRC" before), I had to configure the WSGI file they provide, clone my git repo to the pythonanywhere server using one of their terminals, and that was pretty much it.
+Then I hit many problems related to paths not being absolute which I fixed with a few changes in my code to make sure all paths generated in the app were absolute.
+Other than the paths hiccup, it all went really well.
 
+### PyCharm
+I wrote all my code using PyCharm. I like its interface, after a few years I am getting more and more productive with it thanks to the assiminlation of keyboard shortcuts. I like that the terminal is integrated in the IDE. Also, the syntax highligting and code inspection is really useful.
 
+## Conclusion
+I must admit that I aimed for a too big of a project. That was not my intention. I really wanted to exploit the acquired knowledge about databases and thought that this web site would not require so much work. But after brainstorming and designing the project, and after I started coding it two things happened: I got really excited, and I realized that this was growing more and more. The excitement of seeing everything come together was obscuring the reality and I went along implementing all I had in mind.
+With that said, I have learnt a lot about making web applications and am very satisfied with the result. Of course many things are missing (like avatars, filters, clickable tags, ...) but I am happy I found the brake pedal and dcidd to pospone those features for now.
 
+I am very grateful to the cs50 team. Your pedagogical level is extremely high. It shows you all are passionate about teaching, that you put effort in making the sessions interesting, challenging, fun.
 
+Thank you very much for the revision of my project.
 
-# TODO: seems like deleting a post still yelds bad paths for the images? It happens locally but not online. Test it well online and if it works well on new posts just ignore it ...
+This is not a goodbye, because I know I am going to enroll on the databases and python courses soon!! <3

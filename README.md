@@ -51,59 +51,59 @@ Here is a trimmed structure of the project:
 ```
 webtest
 ├── ICR
-*│     ├── __init__.py
-*│     ├── .env
-*│     ├── auth.py
-*│     ├── blog.py
-*│     ├── config.py
-*│     ├── db.py
-*│     ├── helpers
-*│     │     ├── image_process.py
-*│     │     ├── misc.py
-*│     │     ├── post_edit.py
-*│     │     └── sql_functions.py
-*│     ├── misc
-*│     │     ├── icons.kra
-*│     │     └── xnview_scale_crop_preset_001.xbs
-*│     ├── requirements.txt
-*│     ├── schema.sql
+│     ├── __init__.py
+│     ├── .env
+│     ├── auth.py
+│     ├── blog.py
+│     ├── config.py
+│     ├── db.py
+│     ├── helpers
+│     │     ├── image_process.py
+│     │     ├── misc.py
+│     │     ├── post_edit.py
+│     │     └── sql_functions.py
+│     ├── misc
+│     │     ├── icons.kra
+│     │     └── xnview_scale_crop_preset_001.xbs
+│     ├── requirements.txt
+│     ├── schema.sql
 │     ├── static
-*│     │     ├── css
-*│     │     │     └── main.css
-*│     │     ├── icons
-*│     │     │     ├── avatars
-*│     │     │     │     ├── icon_01.PNG
-*│     │     │     │     ├── ...
-*│     │     │     ├── favicon.ico
-*│     │     │     └── I_heart_validator.png
-*│     │     └── images
-*│     │         ├── 2025_03
-*│     │         │     ├── pictures
-*│     │         │     │     ├── 2025_03_05_06_29_38_0.jpg
-*│     │         │     │     ├── ...
-*│     │         │     └── thumbnails
-*│     │         │         ├── 2025_03_05_06_29_38_0_tmb.png
-*│     │         │         ├── ...
-*│     │         └── 2025_04
-*│     │             ├── pictures
-*│     │             │     ├── 2025_04_01_22_16_16_0.jpg
-*│     │             │     ├── ...
-*│     │             └── thumbnails
-*│     │                 ├── 2025_04_01_22_16_16_0_tmb.png
-*│     │                 ├── ...
-*│     └── templates
-*│         ├── auth
-*│         │     ├── login.html
-*│         │     ├── psswd_change.html
-*│         │     └── register.html
-*│         ├── base.html
-*│         ├── blog
-*│         │     ├── create.html
-*│         │     ├── create_mobile.html
-*│         │     ├── edit.html
-*│         │     ├── full_screen_carousel.html
-*│         │     └── index.html
-*│         └── post_template.html
+│     │     ├── css
+│     │     │     └── main.css
+│     │     ├── icons
+│     │     │     ├── avatars
+│     │     │     │     ├── icon_01.PNG
+│     │     │     │     ├── ...
+│     │     │     ├── favicon.ico
+│     │     │     └── I_heart_validator.png
+│     │     └── images
+│     │         ├── 2025_03
+│     │         │     ├── pictures
+│     │         │     │     ├── 2025_03_05_06_29_38_0.jpg
+│     │         │     │     ├── ...
+│     │         │     └── thumbnails
+│     │         │         ├── 2025_03_05_06_29_38_0_tmb.png
+│     │         │         ├── ...
+│     │         └── 2025_04
+│     │             ├── pictures
+│     │             │     ├── 2025_04_01_22_16_16_0.jpg
+│     │             │     ├── ...
+│     │             └── thumbnails
+│     │                 ├── 2025_04_01_22_16_16_0_tmb.png
+│     │                 ├── ...
+│     └── templates
+│         ├── auth
+│         │     ├── login.html
+│         │     ├── psswd_change.html
+│         │     └── register.html
+│         ├── base.html
+│         ├── blog
+│         │     ├── create.html
+│         │     ├── create_mobile.html
+│         │     ├── edit.html
+│         │     ├── full_screen_carousel.html
+│         │     └── index.html
+│         └── post_template.html
 ```
 
 ### webtest/ICR/__init__.py

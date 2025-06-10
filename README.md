@@ -1,6 +1,7 @@
 # ICE CLIMBING REPORTS
-#### Video Demo:  <URL HERE>
-#### Description:
+#### https://paurocher.pythonanywhere.com/
+#### Video Demo (short: 2:48):  https://studio.youtube.com/video/HspJEeW5--A/edit
+#### Video Demo (long: 4:32):  https://studio.youtube.com/video/aWDZArCJEIQ/edit
 
 
 ## Introduction
